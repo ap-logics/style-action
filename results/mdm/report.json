@@ -1,0 +1,142 @@
+{
+  "model": "mdm",
+  "tau": -0.1116,
+  "tau_score_curve": {
+    "-0.1912": 0.1684,
+    "-0.1522": 0.2296,
+    "-0.1116": 0.25,
+    "-0.0049": 0.2296,
+    "0.1331": 0.1684
+  },
+  "cka_mean": 0.8709,
+  "ged_mean": 0.3571,
+  "ber": 0.1429,
+  "per_style_cka": {
+    "angrily": 0.8386,
+    "tiredly": 0.8801,
+    "happily": 0.9455,
+    "nervously": 0.8652,
+    "gracefully": 0.781,
+    "heavily": 0.9257,
+    "confidently": 0.8599
+  },
+  "per_style_cka_p": {
+    "angrily": 0.015,
+    "tiredly": 0.018,
+    "happily": 0.001,
+    "nervously": 0.012,
+    "gracefully": 0.299,
+    "heavily": 0.0,
+    "confidently": 0.016
+  },
+  "per_style_ged": {
+    "angrily": 0.4643,
+    "tiredly": 0.3929,
+    "happily": 0.2857,
+    "nervously": 0.4643,
+    "gracefully": 0.25,
+    "heavily": 0.3214,
+    "confidently": 0.3214
+  },
+  "per_style_ged_p": {
+    "angrily": 0.806,
+    "tiredly": 0.952,
+    "happily": 0.992,
+    "nervously": 0.786,
+    "gracefully": 0.997,
+    "heavily": 0.985,
+    "confidently": 0.991
+  },
+  "escape_matrix": [
+    [
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1
+    ]
+  ],
+  "consistency": {
+    "angrily": 0.0369,
+    "tiredly": 0.0839,
+    "happily": 0.0471,
+    "nervously": 0.0161,
+    "gracefully": 0.0005,
+    "heavily": -0.0064,
+    "confidently": 0.0053
+  },
+  "consistency_p": {
+    "angrily": 0.0,
+    "tiredly": 0.0,
+    "happily": 0.0,
+    "nervously": 0.0,
+    "gracefully": 0.0,
+    "heavily": 0.0,
+    "confidently": 0.0
+  },
+  "consistency_mean": 0.0262,
+  "delta_rel_magnitude": 0.4312
+}
