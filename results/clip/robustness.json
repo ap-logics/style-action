@@ -1,0 +1,104 @@
+{
+  "per_template_cka": [
+    {
+      "angrily": 0.9497,
+      "tiredly": 0.9264,
+      "happily": 0.9673,
+      "nervously": 0.9465,
+      "gracefully": 0.9624,
+      "heavily": 0.9843,
+      "confidently": 0.9643
+    },
+    {
+      "angrily": 0.9857,
+      "tiredly": 0.9779,
+      "happily": 0.9732,
+      "nervously": 0.9886,
+      "gracefully": 0.9737,
+      "heavily": 0.9911,
+      "confidently": 0.973
+    },
+    {
+      "angrily": 0.971,
+      "tiredly": 0.9731,
+      "happily": 0.9684,
+      "nervously": 0.964,
+      "gracefully": 0.947,
+      "heavily": 0.9761,
+      "confidently": 0.9515
+    }
+  ],
+  "per_template_ged": [
+    {
+      "angrily": 0.4643,
+      "tiredly": 0.3214,
+      "happily": 0.25,
+      "nervously": 0.4643,
+      "gracefully": 0.2143,
+      "heavily": 0.1786,
+      "confidently": 0.2143
+    },
+    {
+      "angrily": 0.3929,
+      "tiredly": 0.2857,
+      "happily": 0.1786,
+      "nervously": 0.4643,
+      "gracefully": 0.1786,
+      "heavily": 0.2143,
+      "confidently": 0.1429
+    },
+    {
+      "angrily": 0.4643,
+      "tiredly": 0.3214,
+      "happily": 0.2857,
+      "nervously": 0.4643,
+      "gracefully": 0.4643,
+      "heavily": 0.2857,
+      "confidently": 0.3214
+    }
+  ],
+  "summary": {
+    "angrily": {
+      "cka_mean": 0.9688,
+      "cka_std": 0.0148,
+      "ged_mean": 0.4405,
+      "ged_std": 0.0337
+    },
+    "tiredly": {
+      "cka_mean": 0.9591,
+      "cka_std": 0.0232,
+      "ged_mean": 0.3095,
+      "ged_std": 0.0168
+    },
+    "happily": {
+      "cka_mean": 0.9696,
+      "cka_std": 0.0026,
+      "ged_mean": 0.2381,
+      "ged_std": 0.0445
+    },
+    "nervously": {
+      "cka_mean": 0.9664,
+      "cka_std": 0.0173,
+      "ged_mean": 0.4643,
+      "ged_std": 0.0
+    },
+    "gracefully": {
+      "cka_mean": 0.961,
+      "cka_std": 0.0109,
+      "ged_mean": 0.2857,
+      "ged_std": 0.1271
+    },
+    "heavily": {
+      "cka_mean": 0.9838,
+      "cka_std": 0.0061,
+      "ged_mean": 0.2262,
+      "ged_std": 0.0445
+    },
+    "confidently": {
+      "cka_mean": 0.9629,
+      "cka_std": 0.0088,
+      "ged_mean": 0.2262,
+      "ged_std": 0.0734
+    }
+  }
+}
