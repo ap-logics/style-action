@@ -1,0 +1,33 @@
+# Verified working install for the UoN CS cluster (plato), 2026-07-02.
+# Python 3.9 (system python3), plain venv — no conda on the cluster.
+# Install order matters: wheel/setuptools BEFORE chumpy (it builds from
+# source with --no-build-isolation and needs bdist_wheel available).
+#
+#   python3 -m venv ~/sac-env && source ~/sac-env/bin/activate
+#   pip install --upgrade pip wheel setuptools
+#   pip install torch --index-url https://download.pytorch.org/whl/cu121
+#   pip install -r requirements-hpc.txt
+#   pip install --no-build-isolation chumpy
+#
+# numpy is pinned to 1.23.5: chumpy imports the np.bool/np.int aliases
+# removed in numpy 1.24. spacy>=3.8 and moviepy>=2 drop py3.9 support.
+
+numpy==1.23.5
+scipy
+matplotlib
+scikit-learn
+git+https://github.com/openai/CLIP.git
+einops
+smplx==0.1.28
+trimesh
+ftfy
+regex
+tqdm
+blobfile
+joblib
+pandas
+h5py
+spacy<3.8
+moviepy<2
+imageio-ffmpeg
+gdown

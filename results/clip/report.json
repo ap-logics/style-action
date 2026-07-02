@@ -1,0 +1,66 @@
+{
+  "model": "clip",
+  "tau": 0.8906,
+  "cka_mean": 0.9573,
+  "ged_mean": 0.301,
+  "ap": NaN,
+  "ber": 0.0357,
+  "n_actions": 8,
+  "n_styles": 7,
+  "tau_score_curve": {
+    "0.8639": 0.1684,
+    "0.8814": 0.2296,
+    "0.8906": 0.25,
+    "0.9027": 0.2296,
+    "0.9176": 0.1684
+  },
+  "per_style_cka": {
+    "angrily": 0.9497,
+    "tiredly": 0.9264,
+    "happily": 0.9673,
+    "nervously": 0.9465,
+    "gracefully": 0.9624,
+    "heavily": 0.9843,
+    "confidently": 0.9643
+  },
+  "per_style_cka_p": {
+    "angrily": 0.0,
+    "tiredly": 0.0,
+    "happily": 0.0,
+    "nervously": 0.0,
+    "gracefully": 0.0,
+    "heavily": 0.0,
+    "confidently": 0.0
+  },
+  "per_style_ged": {
+    "angrily": 0.4643,
+    "tiredly": 0.3214,
+    "happily": 0.25,
+    "nervously": 0.4643,
+    "gracefully": 0.2143,
+    "heavily": 0.1786,
+    "confidently": 0.2143
+  },
+  "per_style_ged_p": {
+    "angrily": 1.0,
+    "tiredly": 1.0,
+    "happily": 0.991,
+    "nervously": 1.0,
+    "gracefully": 0.995,
+    "heavily": 0.995,
+    "confidently": 1.0
+  },
+  "per_action_ap": {},
+  "per_action_ber": {
+    "a person is walking": 0.0,
+    "a person is running": 0.1429,
+    "a person is jumping": 0.0,
+    "a person is sitting down": 0.0,
+    "a person is waving their hand": 0.0,
+    "a person is kicking": 0.0,
+    "a person is throwing": 0.1429,
+    "a person is dancing": 0.0
+  },
+  "type_a_actions": [],
+  "type_b_actions": []
+}
