@@ -12,6 +12,13 @@ rapidly, swiftly) are excluded throughout: pace shifts action identity
 The original 8x7 grid (grid.py) is kept unchanged for reproducibility of
 the v1 results.
 
+Near-synonymy screen (anisotropy-corrected: centred CLIP embeddings, since
+raw cosines of bare words all sit in [0.85, 0.95] and absolute thresholds
+are meaningless): two style pairs are outliers, angrily~aggressively (0.52)
+and angrily~nervously (0.49), so per-style results for these should be
+treated as correlated rather than independent. One weak style-action cell:
+(stretching, gracefully), the v2 analogue of v1's (dancing, gracefully).
+
 Usage:
   python grid_v2.py --out grid_v2_all_templates.json
 """
