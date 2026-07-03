@@ -183,18 +183,73 @@ def basin(model, root, template, out, elev, azim):
     print(f"wrote {path}")
 
 
+def progression(models, template, out):
+    """Single row of coherence fields, shared scale + one labelled colorbar."""
+    fig, axes = plt.subplots(1, len(models), figsize=(4.6 * len(models), 4.0))
+    ims = []
+    for ax, model in zip(axes, models):
+        root = Path(__file__).parent / "results" / model
+        Z_S, Z_T, meta = load(root, template)
+        proj = pca2(Z_S, Z_T)
+        P_S, esc = proj(Z_S), escapes(Z_S, Z_T)
+        short = [a.replace("a person is ", "") for a in meta["actions"]]
+
+        roots, vecs = [], []
+        for j in range(Z_T.shape[0]):
+            P_T = proj(Z_T[j])
+            roots.append(P_S); vecs.append(P_T - P_S)
+        roots, vecs = np.vstack(roots), np.vstack(vecs)
+
+        pad = 0.25 * (P_S.max(0) - P_S.min(0))
+        n = 240
+        x0, x1 = P_S[:, 0].min() - pad[0], P_S[:, 0].max() + pad[0]
+        y0, y1 = P_S[:, 1].min() - pad[1], P_S[:, 1].max() + pad[1]
+        xs = x0 + (x1 - x0) / (n - 1) * np.arange(n)
+        ys = y0 + (y1 - y0) / (n - 1) * np.arange(n)
+        XX, YY = np.meshgrid(xs, ys)
+        U, V, coh = rbf_field(roots, vecs, XX, YY)
+
+        im = ax.pcolormesh(XX, YY, coh, cmap=PARULA, shading="gouraud",
+                           vmin=0, vmax=1, alpha=0.9, rasterized=True)
+        ims.append(im)
+        ax.streamplot(xs, ys, U, V, color="white", density=1.3,
+                      linewidth=0.7, arrowsize=0.9)
+        ax.scatter(P_S[:, 0], P_S[:, 1], s=100, c="#111", zorder=6,
+                   edgecolors="white", linewidths=1.2)
+        for a, name in enumerate(short):
+            ax.annotate(name, P_S[a], textcoords="offset points",
+                        xytext=(8, 8), fontsize=9.5, color="#000",
+                        fontweight="medium", zorder=7,
+                        bbox=dict(fc="white", ec="none", alpha=0.92, pad=1.4))
+        n_esc = int(esc.sum())
+        label = {"clip": "CLIP (input)", "mdm": "MDM",
+                 "t2mgpt": "T2M-GPT"}.get(model, model.upper())
+        ax.set_title(f"{label}   {n_esc}/{esc.size} escapes", fontsize=11)
+        ax.set_xticks([]); ax.set_yticks([])
+    cb = fig.colorbar(ims[-1], ax=axes, shrink=0.85, pad=0.015)
+    cb.set_label("directional coherence\n0 = turbulent   1 = coherent",
+                 fontsize=9)
+    path = out / ("flowfield_" + "_".join(models) + ".pdf")
+    plt.savefig(path, bbox_inches="tight", dpi=200)
+    print(f"wrote {path}")
+
+
 def main():
     p = argparse.ArgumentParser()
-    p.add_argument("--model", required=True)
-    p.add_argument("--kind", choices=["flow", "basin"], required=True)
+    p.add_argument("--model", required=False)
+    p.add_argument("--models", nargs="+", help="multi-panel progression")
+    p.add_argument("--kind", choices=["flow", "basin"], required=False)
     p.add_argument("--template", type=int, default=0)
     p.add_argument("--elev", type=float, default=55)
     p.add_argument("--azim", type=float, default=-60)
     p.add_argument("--out", default="../overleaf/figures")
     args = p.parse_args()
 
-    root = Path(__file__).parent / "results" / args.model
     out = Path(args.out); out.mkdir(parents=True, exist_ok=True)
+    if args.models:
+        progression(args.models, args.template, out)
+        return
+    root = Path(__file__).parent / "results" / args.model
     if args.kind == "flow":
         flow(args.model, root, args.template, out)
     else:
