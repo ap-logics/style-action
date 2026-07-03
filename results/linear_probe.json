@@ -1,0 +1,80 @@
+{
+ "clip": {
+  "direction_recovery_mean": 0.8046,
+  "steering_success_rate": 1.0,
+  "per_style_recovery": {
+   "angrily": 0.8135,
+   "tiredly": 0.87,
+   "happily": 0.828,
+   "nervously": 0.7865,
+   "gracefully": 0.8152,
+   "heavily": 0.7025,
+   "confidently": 0.8165
+  }
+ },
+ "opentma_h3d": {
+  "direction_recovery_mean": 0.2758,
+  "steering_success_rate": 0.9464,
+  "per_style_recovery": {
+   "angrily": 0.2742,
+   "tiredly": 0.3259,
+   "happily": 0.2085,
+   "nervously": 0.3617,
+   "gracefully": 0.2396,
+   "heavily": 0.3343,
+   "confidently": 0.1861
+  }
+ },
+ "opentma_motionx": {
+  "direction_recovery_mean": 0.2963,
+  "steering_success_rate": 1.0,
+  "per_style_recovery": {
+   "angrily": 0.3477,
+   "tiredly": 0.3578,
+   "happily": 0.2155,
+   "nervously": 0.3948,
+   "gracefully": 0.1844,
+   "heavily": 0.4069,
+   "confidently": 0.167
+  }
+ },
+ "opentma_unimocap": {
+  "direction_recovery_mean": 0.5851,
+  "steering_success_rate": 1.0,
+  "per_style_recovery": {
+   "angrily": 0.5659,
+   "tiredly": 0.5984,
+   "happily": 0.5813,
+   "nervously": 0.639,
+   "gracefully": 0.5661,
+   "heavily": 0.5887,
+   "confidently": 0.5568
+  }
+ },
+ "mdm": {
+  "direction_recovery_mean": 0.0633,
+  "steering_success_rate": 0.7857,
+  "per_style_recovery": {
+   "angrily": 0.1645,
+   "tiredly": 0.2057,
+   "happily": 0.0858,
+   "nervously": 0.0867,
+   "gracefully": -0.0068,
+   "heavily": -0.1603,
+   "confidently": 0.0673
+  }
+ },
+ "t2mgpt": {
+  "direction_recovery_mean": 0.0652,
+  "steering_success_rate": 0.5179,
+  "per_style_recovery": {
+   "angrily": -0.0932,
+   "tiredly": 0.2594,
+   "happily": 0.0393,
+   "nervously": -0.1194,
+   "gracefully": 0.0727,
+   "heavily": 0.2819,
+   "confidently": 0.0157
+  }
+ }
+}
