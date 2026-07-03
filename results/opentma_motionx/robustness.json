@@ -1,0 +1,471 @@
+{
+  "per_template": {
+    "0": {
+      "tau": 0.0363,
+      "tau_score_curve": {
+        "-0.0705": 0.1684,
+        "-0.0087": 0.2296,
+        "0.0363": 0.25,
+        "0.0507": 0.2296,
+        "0.0814": 0.1684
+      },
+      "cka_mean": 0.9511,
+      "ged_mean": 0.3928,
+      "ber": 0.0179,
+      "per_style_cka": {
+        "angrily": 0.94,
+        "tiredly": 0.9101,
+        "happily": 0.9629,
+        "nervously": 0.9459,
+        "gracefully": 0.9814,
+        "heavily": 0.9467,
+        "confidently": 0.9704
+      },
+      "per_style_cka_p": {
+        "angrily": 0.012,
+        "tiredly": 0.053,
+        "happily": 0.0,
+        "nervously": 0.001,
+        "gracefully": 0.0,
+        "heavily": 0.088,
+        "confidently": 0.0
+      },
+      "per_style_ged": {
+        "angrily": 0.5,
+        "tiredly": 0.3214,
+        "happily": 0.3571,
+        "nervously": 0.3571,
+        "gracefully": 0.3571,
+        "heavily": 0.5357,
+        "confidently": 0.3214
+      },
+      "per_style_ged_p": {
+        "angrily": 0.645,
+        "tiredly": 0.995,
+        "happily": 0.981,
+        "nervously": 0.978,
+        "gracefully": 0.982,
+        "heavily": 0.484,
+        "confidently": 0.988
+      },
+      "escape_matrix": [
+        [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "consistency": {
+        "angrily": 0.1919,
+        "tiredly": 0.1998,
+        "happily": 0.1052,
+        "nervously": 0.2174,
+        "gracefully": 0.0803,
+        "heavily": 0.238,
+        "confidently": 0.073
+      },
+      "consistency_p": {
+        "angrily": 0.0,
+        "tiredly": 0.0,
+        "happily": 0.0,
+        "nervously": 0.0,
+        "gracefully": 0.0,
+        "heavily": 0.0,
+        "confidently": 0.0
+      },
+      "consistency_mean": 0.1579,
+      "delta_rel_magnitude": 0.415
+    },
+    "1": {
+      "tau": 0.0363,
+      "tau_score_curve": {
+        "-0.0705": 0.1684,
+        "-0.0087": 0.2296,
+        "0.0363": 0.25,
+        "0.0507": 0.2296,
+        "0.0814": 0.1684
+      },
+      "cka_mean": 0.9309,
+      "ged_mean": 0.4184,
+      "ber": 0.0179,
+      "per_style_cka": {
+        "angrily": 0.9465,
+        "tiredly": 0.8992,
+        "happily": 0.9458,
+        "nervously": 0.8971,
+        "gracefully": 0.9306,
+        "heavily": 0.9555,
+        "confidently": 0.9417
+      },
+      "per_style_cka_p": {
+        "angrily": 0.005,
+        "tiredly": 0.227,
+        "happily": 0.002,
+        "nervously": 0.085,
+        "gracefully": 0.052,
+        "heavily": 0.218,
+        "confidently": 0.001
+      },
+      "per_style_ged": {
+        "angrily": 0.4643,
+        "tiredly": 0.3929,
+        "happily": 0.4643,
+        "nervously": 0.4286,
+        "gracefully": 0.4286,
+        "heavily": 0.4286,
+        "confidently": 0.3214
+      },
+      "per_style_ged_p": {
+        "angrily": 0.799,
+        "tiredly": 0.981,
+        "happily": 0.757,
+        "nervously": 0.96,
+        "gracefully": 0.875,
+        "heavily": 0.855,
+        "confidently": 0.982
+      },
+      "escape_matrix": [
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "consistency": {
+        "angrily": 0.2616,
+        "tiredly": 0.2501,
+        "happily": 0.1384,
+        "nervously": 0.3299,
+        "gracefully": 0.1889,
+        "heavily": 0.2313,
+        "confidently": 0.1434
+      },
+      "consistency_p": {
+        "angrily": 0.0,
+        "tiredly": 0.0,
+        "happily": 0.0,
+        "nervously": 0.0,
+        "gracefully": 0.0,
+        "heavily": 0.0,
+        "confidently": 0.0
+      },
+      "consistency_mean": 0.2205,
+      "delta_rel_magnitude": 0.5057
+    },
+    "2": {
+      "tau": 0.0287,
+      "tau_score_curve": {
+        "-0.0815": 0.1684,
+        "-0.0332": 0.2296,
+        "0.0287": 0.25,
+        "0.0598": 0.2296,
+        "0.0941": 0.1684
+      },
+      "cka_mean": 0.9042,
+      "ged_mean": 0.4745,
+      "ber": 0.0714,
+      "per_style_cka": {
+        "angrily": 0.9192,
+        "tiredly": 0.9269,
+        "happily": 0.901,
+        "nervously": 0.8619,
+        "gracefully": 0.8999,
+        "heavily": 0.9375,
+        "confidently": 0.8827
+      },
+      "per_style_cka_p": {
+        "angrily": 0.058,
+        "tiredly": 0.097,
+        "happily": 0.155,
+        "nervously": 0.145,
+        "gracefully": 0.253,
+        "heavily": 0.107,
+        "confidently": 0.5
+      },
+      "per_style_ged": {
+        "angrily": 0.4643,
+        "tiredly": 0.4286,
+        "happily": 0.3929,
+        "nervously": 0.5714,
+        "gracefully": 0.5,
+        "heavily": 0.4643,
+        "confidently": 0.5
+      },
+      "per_style_ged_p": {
+        "angrily": 0.842,
+        "tiredly": 0.855,
+        "happily": 0.975,
+        "nervously": 0.216,
+        "gracefully": 0.623,
+        "heavily": 0.764,
+        "confidently": 0.637
+      },
+      "escape_matrix": [
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "consistency": {
+        "angrily": 0.2784,
+        "tiredly": 0.2003,
+        "happily": 0.2691,
+        "nervously": 0.3214,
+        "gracefully": 0.1835,
+        "heavily": 0.1465,
+        "confidently": 0.1941
+      },
+      "consistency_p": {
+        "angrily": 0.0,
+        "tiredly": 0.0,
+        "happily": 0.0,
+        "nervously": 0.0,
+        "gracefully": 0.0,
+        "heavily": 0.0,
+        "confidently": 0.0
+      },
+      "consistency_mean": 0.2276,
+      "delta_rel_magnitude": 0.582
+    }
+  },
+  "summary": {
+    "angrily": {
+      "cka_mean": 0.9352,
+      "cka_std": 0.0116,
+      "ged_mean": 0.4762,
+      "ged_std": 0.0168
+    },
+    "tiredly": {
+      "cka_mean": 0.9121,
+      "cka_std": 0.0114,
+      "ged_mean": 0.381,
+      "ged_std": 0.0446
+    },
+    "happily": {
+      "cka_mean": 0.9366,
+      "cka_std": 0.0261,
+      "ged_mean": 0.4048,
+      "ged_std": 0.0446
+    },
+    "nervously": {
+      "cka_mean": 0.9016,
+      "cka_std": 0.0344,
+      "ged_mean": 0.4524,
+      "ged_std": 0.0891
+    },
+    "gracefully": {
+      "cka_mean": 0.9373,
+      "cka_std": 0.0336,
+      "ged_mean": 0.4286,
+      "ged_std": 0.0583
+    },
+    "heavily": {
+      "cka_mean": 0.9466,
+      "cka_std": 0.0073,
+      "ged_mean": 0.4762,
+      "ged_std": 0.0445
+    },
+    "confidently": {
+      "cka_mean": 0.9316,
+      "cka_std": 0.0365,
+      "ged_mean": 0.3809,
+      "ged_std": 0.0842
+    }
+  }
+}
