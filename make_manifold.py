@@ -119,21 +119,22 @@ def panel(ax, system: str, elev: float, azim: float):
 
 def main():
     p = argparse.ArgumentParser()
-    p.add_argument("--left", default="clip")
-    p.add_argument("--right", default="t2mgpt")
+    p.add_argument("--systems", nargs="+",
+                   default=["clip", "mdm", "t2mgpt"])
     p.add_argument("--elev", type=float, default=48)
     p.add_argument("--azim", type=float, default=-58)
     p.add_argument("--out", default="../overleaf/figures")
     args = p.parse_args()
 
-    fig = plt.figure(figsize=(11, 4.6))
-    for i, system in enumerate([args.left, args.right]):
-        ax = fig.add_subplot(1, 2, i + 1, projection="3d")
+    n = len(args.systems)
+    fig = plt.figure(figsize=(5.6 * n, 4.6))
+    for i, system in enumerate(args.systems):
+        ax = fig.add_subplot(1, n, i + 1, projection="3d")
         panel(ax, system, args.elev, args.azim)
-    fig.subplots_adjust(left=0, right=1, top=1, bottom=0, wspace=-0.05)
+    fig.subplots_adjust(left=0, right=1, top=1, bottom=0, wspace=-0.08)
 
     out = Path(args.out); out.mkdir(parents=True, exist_ok=True)
-    path = out / f"manifold_{args.left}_{args.right}.pdf"
+    path = out / ("manifold_" + "_".join(args.systems) + ".pdf")
     plt.savefig(path, bbox_inches="tight", dpi=220)
     print(f"wrote {path}")
 
