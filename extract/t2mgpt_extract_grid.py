@@ -55,12 +55,13 @@ def build(vq_ckpt: str, trans_ckpt: str, dev: str):
 
 
 def encode_prompt(net, tr, clip_model, prompt: str, dev: str,
-                  seed: int) -> tuple[np.ndarray, list]:
+                  seed: int, categorical: bool = False) -> tuple[np.ndarray, list]:
     torch.manual_seed(seed)
     with torch.no_grad():
         tokens = clip.tokenize([prompt], truncate=True).to(dev)
         feat = clip_model.encode_text(tokens).float()
-        idx = tr.sample(feat, if_categorial=False)      # greedy: deterministic
+        # categorical sampling varies with seed; greedy is deterministic
+        idx = tr.sample(feat, if_categorial=categorical)
         codes = net.vqvae.quantizer.dequantize(idx)     # (1, T', 512)
         z = codes[0].mean(dim=0).cpu().numpy()
     return z, idx[0].cpu().tolist()
@@ -74,6 +75,7 @@ def main():
     p.add_argument("--trans_ckpt",
                    default="pretrained/VQTransformer_corruption05/net_best_fid.pth")
     p.add_argument("--seed", type=int, default=42)
+    p.add_argument("--categorical", action="store_true")
     cli = p.parse_args()
     dev = "cuda" if torch.cuda.is_available() else "cpu"
 
@@ -89,7 +91,7 @@ def main():
 
         Z_S = []
         for prompt in g["neutral"]:
-            z, tok = encode_prompt(net, tr, clip_model, prompt, dev, cli.seed)
+            z, tok = encode_prompt(net, tr, clip_model, prompt, dev, cli.seed, cli.categorical)
             Z_S.append(z); tokens_log["neutral"].append(tok)
         Z_S = np.stack(Z_S)
         print(f"[template {t}] neutral done", flush=True)
@@ -98,7 +100,7 @@ def main():
         for j, row in enumerate(g["styled"]):
             zs, toks = [], []
             for prompt in row:
-                z, tok = encode_prompt(net, tr, clip_model, prompt, dev, cli.seed)
+                z, tok = encode_prompt(net, tr, clip_model, prompt, dev, cli.seed, cli.categorical)
                 zs.append(z); toks.append(tok)
             Z_T.append(np.stack(zs)); tokens_log["styled"].append(toks)
             print(f"[template {t}] style '{g['styles'][j]}' done", flush=True)
@@ -108,7 +110,7 @@ def main():
         (out / "tokens.json").write_text(json.dumps(tokens_log))
         (out / "meta.json").write_text(json.dumps(
             {"actions": g["actions"], "styles": g["styles"], "template": t,
-             "seed": cli.seed, "sampling": "greedy",
+             "seed": cli.seed, "sampling": "categorical" if cli.categorical else "greedy",
              "vq_ckpt": cli.vq_ckpt, "trans_ckpt": cli.trans_ckpt}))
         print(f"[template {t}] done in {time.time()-t0:.0f}s  "
               f"Z_S {Z_S.shape}  Z_T {np.stack(Z_T).shape}", flush=True)
