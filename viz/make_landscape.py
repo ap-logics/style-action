@@ -188,7 +188,7 @@ def progression(models, template, out):
     fig, axes = plt.subplots(1, len(models), figsize=(4.6 * len(models), 4.0))
     ims = []
     for ax, model in zip(axes, models):
-        root = Path(__file__).parent / "results" / model
+        root = Path(__file__).resolve().parents[1] / "results" / model
         Z_S, Z_T, meta = load(root, template)
         proj = pca2(Z_S, Z_T)
         P_S, esc = proj(Z_S), escapes(Z_S, Z_T)
@@ -249,7 +249,7 @@ def main():
     if args.models:
         progression(args.models, args.template, out)
         return
-    root = Path(__file__).parent / "results" / args.model
+    root = Path(__file__).resolve().parents[1] / "results" / args.model
     if args.kind == "flow":
         flow(args.model, root, args.template, out)
     else:

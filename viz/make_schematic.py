@@ -84,6 +84,6 @@ ax.annotate("consistency $\\approx 0$", (0.05, 0.9), fontsize=9,
             color="#c43030", fontweight="bold")
 
 plt.tight_layout()
-out = Path(__file__).parent.parent / "overleaf" / "figures" / "schematic.pdf"
+out = Path(__file__).resolve().parents[2] / "overleaf" / "figures" / "schematic.pdf"
 plt.savefig(out, bbox_inches="tight")
 print(f"wrote {out}")

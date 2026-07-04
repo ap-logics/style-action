@@ -23,8 +23,8 @@ from pathlib import Path
 
 import numpy as np
 
-sys.path.insert(0, str(Path(__file__).parent / "metrics"))
-sys.path.insert(0, str(Path(__file__).parent / "extract"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "metrics"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "extract"))
 
 from cka import linear_cka
 from ged import graph_edit_distance
@@ -32,7 +32,7 @@ from tau_select import tau_selection, TAU_QUANTILES
 from style_vectors import style_vectors, consistency
 from base import LatentExtractor
 
-ROOT = Path(__file__).parent
+ROOT = Path(__file__).resolve().parents[1]
 
 
 def load(system: str):

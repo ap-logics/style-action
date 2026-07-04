@@ -53,7 +53,7 @@ def main():
     p.add_argument("--out", default="../overleaf/figures")
     args = p.parse_args()
 
-    root = Path(__file__).parent / "results" / args.model
+    root = Path(__file__).resolve().parents[1] / "results" / args.model
     Z_S, Z_T, meta = load(root, args.template)
     styles = meta["styles"]
     short = [a.replace("a person is ", "") for a in meta["actions"]]

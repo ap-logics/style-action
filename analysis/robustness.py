@@ -17,9 +17,10 @@ from pathlib import Path
 
 import numpy as np
 
-sys.path.insert(0, str(Path(__file__).parent / "prompts"))
-sys.path.insert(0, str(Path(__file__).parent / "metrics"))
-sys.path.insert(0, str(Path(__file__).parent / "extract"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "prompts"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "metrics"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "extract"))
 
 from grid import build_grid, TEMPLATES
 from cka import linear_cka

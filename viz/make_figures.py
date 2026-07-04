@@ -88,7 +88,7 @@ def main():
     p.add_argument("--out", default="../overleaf/figures")
     args = p.parse_args()
 
-    res = Path(__file__).parent / "results" / args.model
+    res = Path(__file__).resolve().parents[1] / "results" / args.model
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
     kernel_figure(res, out, args.model)
