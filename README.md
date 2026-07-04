@@ -11,7 +11,9 @@ CLIP text-encoder control.
 ```
 eval/
 ├── prompts/
-│   ├── grid.py            8 actions × 7 styles + neutral; 3 paraphrase templates
+│   ├── grid.py            v1: 8 actions × 7 styles; 3 paraphrase templates
+│   ├── grid_v2.py         v2: 24 actions × 13 styles, corpus-mined
+│   ├── mine_grid.py       action/adverb frequencies from HumanML3D captions
 │   └── validate.py        CLIP near-synonymy screen for the vocabulary
 ├── extract/
 │   ├── base.py            LatentExtractor ABC + cosine_kernel
@@ -27,8 +29,17 @@ eval/
 │   └── ap.py              action preservation via HumanML3D classifier
 ├── classifier/humanml3d.py
 ├── pipeline.py            extract / generate / score stages
+├── score_hpc.py           score multi-template HPC results
+├── score_seeds.py         aggregate multi-seed runs (mean ± sd)
 ├── robustness.py          re-runs CKA/GED under all paraphrase templates
-├── make_figures.py        regenerates all paper figures from results/
+├── robustness_stats.py    leave-2-out subsample CIs + tau sensitivity
+├── linear_probe.py        leave-one-action-out supervised style recovery
+├── bayes_escape.py        hierarchical Bayesian escape model (PyMC)
+├── make_figures.py        kernel heatmaps + per-style CKA bars
+├── make_phase_portrait.py arrow-level style vectors, escapes in red
+├── make_landscape.py      coherence flow fields (+3-panel progression)
+├── make_manifold.py       hillshaded 3D landscape (talks/posters)
+├── make_schematic.py      Figure 1 conceptual schematic
 ├── slurm/                 sbatch scripts for the full run
 ├── requirements-hpc.txt   verified cluster install (see header for order)
 ├── environment.yml        local conda env (laptop pilot)
