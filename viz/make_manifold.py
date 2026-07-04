@@ -27,7 +27,7 @@ PARULA = LinearSegmentedColormap.from_list("parula", [
 
 
 def load(system: str, template: int = 0):
-    base = Path(__file__).parent / "results" / system
+    base = Path(__file__).resolve().parents[1] / "results" / system
     if (base / str(template)).exists():
         base = base / str(template)
     Z_S = np.load(base / "Z_S.npy")

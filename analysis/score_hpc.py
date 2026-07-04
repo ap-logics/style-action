@@ -22,8 +22,8 @@ from pathlib import Path
 
 import numpy as np
 
-sys.path.insert(0, str(Path(__file__).parent / "metrics"))
-sys.path.insert(0, str(Path(__file__).parent / "extract"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "metrics"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "extract"))
 
 from cka import linear_cka, null_cka
 from ged import graph_edit_distance, null_ged
@@ -79,7 +79,7 @@ def main():
     p.add_argument("--n_perms", type=int, default=1000)
     args = p.parse_args()
 
-    root = Path(__file__).parent / "results" / args.model
+    root = Path(__file__).resolve().parents[1] / "results" / args.model
     tdirs = sorted([d for d in root.iterdir() if d.is_dir() and d.name.isdigit()])
     if not tdirs:
         sys.exit(f"No template dirs under {root} — scp the HPC results first.")

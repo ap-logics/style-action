@@ -28,18 +28,20 @@ eval/
 │   ├── style_vectors.py   δ_j(a) consistency + null + transfer targets
 │   └── ap.py              action preservation via HumanML3D classifier
 ├── classifier/humanml3d.py
-├── pipeline.py            extract / generate / score stages
-├── score_hpc.py           score multi-template HPC results
-├── score_seeds.py         aggregate multi-seed runs (mean ± sd)
-├── robustness.py          re-runs CKA/GED under all paraphrase templates
-├── robustness_stats.py    leave-2-out subsample CIs + tau sensitivity
-├── linear_probe.py        leave-one-action-out supervised style recovery
-├── bayes_escape.py        hierarchical Bayesian escape model (PyMC)
-├── make_figures.py        kernel heatmaps + per-style CKA bars
-├── make_phase_portrait.py arrow-level style vectors, escapes in red
-├── make_landscape.py      coherence flow fields (+3-panel progression)
-├── make_manifold.py       hillshaded 3D landscape (talks/posters)
-├── make_schematic.py      Figure 1 conceptual schematic
+├── pipeline.py            entry point: extract / generate / score
+├── analysis/
+│   ├── score_hpc.py       score multi-template HPC results
+│   ├── score_seeds.py     aggregate multi-seed runs (mean ± sd)
+│   ├── robustness.py      CKA/GED under all paraphrase templates
+│   ├── robustness_stats.py  subsample CIs + tau sensitivity
+│   ├── linear_probe.py    leave-one-action-out supervised recovery
+│   └── bayes_escape.py    hierarchical Bayesian escape model (PyMC)
+├── viz/
+│   ├── make_figures.py    kernel heatmaps + per-style CKA bars
+│   ├── make_phase_portrait.py  arrow-level style vectors
+│   ├── make_landscape.py  coherence flow fields (+progression)
+│   ├── make_manifold.py   hillshaded 3D landscape (talks/posters)
+│   └── make_schematic.py  Figure 1 conceptual schematic
 ├── slurm/                 sbatch scripts for the full run
 ├── requirements-hpc.txt   verified cluster install (see header for order)
 ├── environment.yml        local conda env (laptop pilot)
@@ -68,8 +70,8 @@ pip install torch numpy matplotlib git+https://github.com/openai/CLIP.git
 
 python pipeline.py --model clip --stage extract   # downloads ViT-B/32 (~340MB)
 python pipeline.py --model clip --stage score     # → results/clip/report.json
-python robustness.py --model clip                 # → results/clip/robustness.json
-python make_figures.py --model clip --out ../overleaf/figures
+python analysis/robustness.py --model clip       # → results/clip/robustness.json
+python viz/make_figures.py --model clip --out ../overleaf/figures
 ```
 
 Expected headline numbers (template 1): mean CKA 0.957, mean GED 0.301,

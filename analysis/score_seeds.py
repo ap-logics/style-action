@@ -23,8 +23,8 @@ from pathlib import Path
 
 import numpy as np
 
-sys.path.insert(0, str(Path(__file__).parent / "metrics"))
-sys.path.insert(0, str(Path(__file__).parent / "extract"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "metrics"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "extract"))
 
 from cka import linear_cka
 from ged import graph_edit_distance
@@ -64,7 +64,7 @@ def main():
     p.add_argument("--model", required=True)
     args = p.parse_args()
 
-    root = Path(__file__).parent / "results" / args.model
+    root = Path(__file__).resolve().parents[1] / "results" / args.model
     seed_dirs = sorted(d for d in root.iterdir()
                        if d.is_dir() and re.match(r"seed\d+$", d.name))
     if not seed_dirs:
