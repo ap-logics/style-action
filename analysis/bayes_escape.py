@@ -30,36 +30,44 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 ROOT = Path(__file__).resolve().parents[1]
-MODELS = ["clip", "mdm", "t2mgpt"]
+import os
+MODELS = os.environ.get("BAYES_MODELS", "clip,mdm,t2mgpt").split(",")
+
+
+def esc_matrix(zdir: Path) -> np.ndarray:
+    Z_S = np.load(zdir / "Z_S.npy")
+    Z_T = np.load(zdir / "Z_T.npy")
+    Zs = Z_S / np.linalg.norm(Z_S, axis=1, keepdims=True)
+    return np.stack([
+        (Z_T[j] / np.linalg.norm(Z_T[j], axis=1, keepdims=True)
+         @ Zs.T).argmax(axis=1) != np.arange(len(Z_S))
+        for j in range(Z_T.shape[0])]).astype(int)
+
+
+def find_runs(model: str) -> list[Path]:
+    """All (seed x template) leaf dirs containing Z files, any layout."""
+    root = ROOT / "results" / model
+    leaves = sorted(root.glob("seed*/[0-9]")) or sorted(root.glob("[0-9]"))
+    return [d for d in leaves if (d / "Z_S.npy").exists()] or (
+        [root] if (root / "Z_S.npy").exists() else [])
 
 
 def load_escapes():
-    """Returns long-format arrays: model_idx, style_idx, action_idx, escaped."""
+    """Long-format arrays over every replicate run of every model."""
     m_idx, s_idx, a_idx, y = [], [], [], []
     styles = actions = None
     for mi, model in enumerate(MODELS):
-        rob = json.loads((ROOT / "results" / model / "robustness.json").read_text())
-        per_t = rob.get("per_template")
-        if per_t is None:
-            # clip predates score_hpc: recompute escapes from saved latents
-            Z_S = np.load(ROOT / "results" / model / "Z_S.npy")
-            Z_T = np.load(ROOT / "results" / model / "Z_T.npy")
-            Zs = Z_S / np.linalg.norm(Z_S, axis=1, keepdims=True)
-            mat = np.stack([
-                (Z_T[j] / np.linalg.norm(Z_T[j], axis=1, keepdims=True)
-                 @ Zs.T).argmax(axis=1) != np.arange(len(Z_S))
-                for j in range(Z_T.shape[0])]).astype(int)
-            mats = [mat]
-        else:
-            mats = [np.array(per_t[t]["escape_matrix"]) for t in sorted(per_t)]
-        meta = json.loads((ROOT / "results" / model / "meta.json").read_text())
+        runs = find_runs(model)
+        meta = json.loads((runs[0] / "meta.json").read_text())
         styles = meta["styles"]
         actions = [a.replace("a person is ", "") for a in meta["actions"]]
-        for mat in mats:                       # (7, 8)
+        for run in runs:
+            mat = esc_matrix(run)
             for j in range(mat.shape[0]):
                 for a in range(mat.shape[1]):
                     m_idx.append(mi); s_idx.append(j); a_idx.append(a)
                     y.append(int(mat[j, a]))
+        print(f"{model}: {len(runs)} replicate runs")
     return (np.array(m_idx), np.array(s_idx), np.array(a_idx),
             np.array(y), styles, actions)
 
@@ -114,7 +122,8 @@ def main():
 
     # forest plot: per-style escape probability, three models side by side
     fig, ax = plt.subplots(figsize=(6.4, 4.2))
-    colors = {"clip": "#4878a8", "mdm": "#f0a13a", "t2mgpt": "#c43030"}
+    palette = ["#4878a8", "#f0a13a", "#c43030"]
+    colors = {m: palette[i % 3] for i, m in enumerate(MODELS)}
     for mi, mname in enumerate(MODELS):
         means = [out[mname][s]["mean"] for s in styles]
         lo = [out[mname][s]["hdi94"][0] for s in styles]
