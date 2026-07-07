@@ -71,33 +71,53 @@ def build(repo: Path, dev: str):
 
 
 class CovCollector:
-    """Accumulates mean input covariance per hooked layer into named buckets."""
+    """Accumulates mean input covariance per hooked layer into named buckets.
+
+    Accumulation happens on the model device (fast); the running bucket is
+    flushed to CPU RAM only when set_active() switches buckets, so the
+    GPU->CPU transfer cost is once per prompt, not once per forward step.
+    """
 
     def __init__(self, model: nn.Module):
         self.layers: dict[str, nn.Linear] = {}
-        self.buckets: dict[str, dict[str, torch.Tensor]] = {}
+        self.buckets: dict[str, dict[str, torch.Tensor]] = {}   # CPU store
         self.counts: dict[str, dict[str, int]] = {}
+        self._dev_acc: dict[str, torch.Tensor] = {}             # device accumulators
+        self._dev_cnt: dict[str, int] = {}
         self.active: str | None = None
         for name, mod in model.named_modules():
             if isinstance(mod, nn.Linear) and mod.in_features <= MAX_IN:
                 self.layers[name] = mod
                 mod.register_forward_pre_hook(self._make_hook(name))
 
+    def set_active(self, bucket: str | None):
+        if self._dev_acc:                                        # flush previous
+            b = self.buckets.setdefault(self.active, {})
+            n = self.counts.setdefault(self.active, {})
+            for name, c in self._dev_acc.items():
+                cc = c.cpu()
+                if name in b:
+                    b[name] += cc
+                    n[name] += self._dev_cnt[name]
+                else:
+                    b[name] = cc
+                    n[name] = self._dev_cnt[name]
+            self._dev_acc, self._dev_cnt = {}, {}
+        self.active = bucket
+
     def _make_hook(self, name):
         def hook(_mod, inputs):
             if self.active is None:
                 return
             x = inputs[0].detach()
-            x = x.reshape(-1, x.shape[-1]).float()      # (tokens, D)
-            c = (x.T @ x).cpu()                          # accumulate on CPU RAM
-            b = self.buckets.setdefault(self.active, {})
-            n = self.counts.setdefault(self.active, {})
-            if name in b:
-                b[name] += c
-                n[name] += x.shape[0]
+            x = x.reshape(-1, x.shape[-1]).float()
+            c = x.T @ x                                          # on device
+            if name in self._dev_acc:
+                self._dev_acc[name] += c
+                self._dev_cnt[name] += x.shape[0]
             else:
-                b[name] = c
-                n[name] = x.shape[0]
+                self._dev_acc[name] = c
+                self._dev_cnt[name] = x.shape[0]
         return hook
 
     def mean_cov(self, buckets: list[str], name: str) -> tuple[torch.Tensor, int]:
@@ -129,12 +149,12 @@ def main():
     nA = args.n_actions
 
     def run_prompt(prompt: str, bucket: str):
-        coll.active = bucket
+        coll.set_active(bucket)
         with torch.no_grad():
             toks = clip.tokenize([prompt], truncate=True).to(dev)
             feat = clip_model.encode_text(toks).float()
             tr.sample(feat, if_categorial=False)
-        coll.active = None
+        coll.set_active(None)
 
     t0 = time.time()
     for g in templates:
@@ -145,72 +165,68 @@ def main():
                 run_prompt(g["styled"][j][a], f"{s}|{a % 2}")
         print(f"collected template {g['template']}  ({time.time()-t0:.0f}s)", flush=True)
 
-    # ---- engrams ----
+    # ---- cache covariances so reruns skip the sampling stage ----
+    cache = Path("/data/pmyap24/sac/results/engram_covs_t2mgpt.pt") \
+        if Path("/data/pmyap24/sac").exists() else ROOT / "results" / "engram_covs_t2mgpt.pt"
+    torch.save({"buckets": coll.buckets, "counts": coll.counts}, cache)
+    print(f"covariances cached to {cache}", flush=True)
+
+    # ---- engrams, streamed per layer (memory-safe) ----
+    # cos(E_a, E_b) over the concatenation of all layers decomposes into
+    # per-layer dot products, so we never hold more than one layer's engrams.
     all_buckets = [f"{s}|{p}" for s in styles + ["neutral"] for p in (0, 1)]
     layer_names = list(coll.layers.keys())
+    groups = styles + ["neutral"]
+    keys = [(s, p) for s in groups for p in (0, 1)]
 
-    def engram(buckets: list[str]) -> dict[str, torch.Tensor]:
-        out = {}
-        for name in layer_names:
-            C_t, _ = coll.mean_cov(buckets, name)
-            W = coll.layers[name].weight.detach().float().cpu()
-            out[name] = W @ C_t @ pinv_total[name]
-        return out
+    import collections
+    num = collections.defaultdict(float)      # pair -> running dot
+    sq = collections.defaultdict(float)       # key -> running norm^2
 
-    print("computing pinv of total covariance per layer ...", flush=True)
-    pinv_total = {}
-    for name in layer_names:
+    for li, name in enumerate(layer_names):
         C_tot, _ = coll.mean_cov(all_buckets, name)
         rtol = C_tot.shape[-1] * torch.finfo(torch.float32).eps
-        pinv_total[name] = torch.linalg.pinv(C_tot, rtol=rtol)
+        pinv_tot = torch.linalg.pinv(C_tot, rtol=rtol)
+        W = coll.layers[name].weight.detach().float().cpu()
 
-    def cos(Ea, Eb):
-        num = sum((Ea[n] * Eb[n]).sum() for n in layer_names)
-        da = sum((Ea[n] ** 2).sum() for n in layer_names).sqrt()
-        db = sum((Eb[n] ** 2).sum() for n in layer_names).sqrt()
-        return float(num / (da * db + 1e-12))
+        E = {}
+        for s, p in keys:
+            C_t, _ = coll.mean_cov([f"{s}|{p}"], name)
+            E[(s, p)] = W @ C_t @ pinv_tot
+        # centered deviations within each parity
+        for p in (0, 1):
+            mean = sum(E[(s, p)] for s in groups) / len(groups)
+            for s in groups:
+                E[(s, p)] = E[(s, p)] - mean
+        for s, p in keys:
+            sq[(s, p)] += float((E[(s, p)] ** 2).sum())
+        for i, si in enumerate(groups):
+            for sj in groups[i:]:
+                num[(si, sj)] += float((E[(si, 0)] * E[(sj, 1)]).sum())
+                if si != sj:
+                    num[(sj, si)] += float((E[(sj, 0)] * E[(si, 1)]).sum())
+        if (li + 1) % 20 == 0:
+            print(f"  layers {li+1}/{len(layer_names)}", flush=True)
 
-    # engrams per (style, parity) and full; centered deviations for overlap.
-    # Raw engrams share a large W-shaped component and, because disjoint
-    # targets' engrams sum to ~W, their deviations anticorrelate by
-    # construction. Centering by the grand mean within each parity removes
-    # both artifacts symmetrically for within- and between-style comparisons.
-    groups = styles + ["neutral"]
-    E_half = {s: {p: engram([f"{s}|{p}"]) for p in (0, 1)} for s in groups}
+    def ccos(si, sj):
+        return num[(si, sj)] / (np.sqrt(sq[(si, 0)]) * np.sqrt(sq[(sj, 1)]) + 1e-12)
 
-    def centered(E_dict):
-        mean = {n: sum(E_dict[s][n] for s in groups) / len(groups)
-                for n in layer_names}
-        return {s: {n: E_dict[s][n] - mean[n] for n in layer_names}
-                for s in groups}
-
-    D_even = centered({s: E_half[s][0] for s in groups})
-    D_odd = centered({s: E_half[s][1] for s in groups})
-
-    within, raw_within = {}, {}
+    within = {s: round(ccos(s, s), 4) for s in groups}
     for s in groups:
-        within[s] = cos(D_even[s], D_odd[s])
-        raw_within[s] = cos(E_half[s][0], E_half[s][1])
-        print(f"{s:<14} centered split-half {within[s]:+.4f}   "
-              f"raw {raw_within[s]:+.4f}", flush=True)
+        print(f"{s:<14} centered split-half {within[s]:+.4f}", flush=True)
 
-    # between-style: centered, cross-parity (j even vs k odd) so the
-    # comparison carries the same split-half noise as the within metric
     between = []
     for i, si in enumerate(styles):
         for sj in styles[i + 1:]:
-            between.append(0.5 * (cos(D_even[si], D_odd[sj]) +
-                                  cos(D_even[sj], D_odd[si])))
-    vs_neutral = [0.5 * (cos(D_even[s], D_odd["neutral"]) +
-                         cos(D_even["neutral"], D_odd[s])) for s in styles]
+            between.append(0.5 * (ccos(si, sj) + ccos(sj, si)))
+    vs_neutral = [0.5 * (ccos(s, "neutral") + ccos("neutral", s)) for s in styles]
 
     summary = {
         "within_style_mean": round(float(np.mean([within[s] for s in styles])), 4),
         "between_style_mean": round(float(np.mean(between)), 4),
         "between_style_sd": round(float(np.std(between)), 4),
         "style_vs_neutral_mean": round(float(np.mean(vs_neutral)), 4),
-        "within_per_style": {s: round(v, 4) for s, v in within.items()},
-        "raw_within_per_style": {s: round(v, 4) for s, v in raw_within.items()},
+        "within_per_style": within,
         "n_layers": len(layer_names), "n_actions": nA, "template": args.template,
     }
     print(f"\nwithin-style (centered split-half):  {summary['within_style_mean']:+.3f}")
