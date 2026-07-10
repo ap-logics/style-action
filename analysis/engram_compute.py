@@ -19,28 +19,32 @@ HP = dict(nb_code=512, code_dim=512, output_emb_width=512, down_t=2,
           n_head_gpt=16, drop_out_rate=0.1, ff_rate=4)
 
 p = argparse.ArgumentParser()
-p.add_argument("--t2mgpt_root", required=True)
+p.add_argument("--t2mgpt_root", default=None)
 p.add_argument("--cache", required=True)
+p.add_argument("--out_name", default="t2mgpt")
 args = p.parse_args()
-
-if not torch.cuda.is_available():
-    torch.Tensor.cuda = lambda self, *a, **k: self
-sys.path.insert(0, args.t2mgpt_root)
-import models.t2m_trans as trans
-ns = Namespace(**HP)
-tr = trans.Text2Motion_Transformer(
-    num_vq=ns.nb_code, embed_dim=ns.embed_dim_gpt, clip_dim=ns.clip_dim,
-    block_size=ns.block_size, num_layers=ns.num_layers, n_head=ns.n_head_gpt,
-    drop_out_rate=ns.drop_out_rate, fc_rate=ns.ff_rate)
-tr.load_state_dict(torch.load(Path(args.t2mgpt_root) / "pretrained/VQTransformer_corruption05/net_best_fid.pth",
-                   map_location="cpu", weights_only=False)["trans"], strict=True)
-tr.eval()
-import torch.nn as nn
-weights = {n: m.weight.detach().float() for n, m in tr.named_modules()
-           if isinstance(m, nn.Linear) and m.in_features <= 1024}
 
 data = torch.load(args.cache, map_location="cpu", weights_only=False)
 buckets, counts = data["buckets"], data["counts"]
+
+if "weights" in data:                       # cache carries its own weights
+    weights = data["weights"]
+else:                                       # legacy T2M-GPT cache
+    if not torch.cuda.is_available():
+        torch.Tensor.cuda = lambda self, *a, **k: self
+    sys.path.insert(0, args.t2mgpt_root)
+    import models.t2m_trans as trans
+    ns = Namespace(**HP)
+    tr = trans.Text2Motion_Transformer(
+        num_vq=ns.nb_code, embed_dim=ns.embed_dim_gpt, clip_dim=ns.clip_dim,
+        block_size=ns.block_size, num_layers=ns.num_layers, n_head=ns.n_head_gpt,
+        drop_out_rate=ns.drop_out_rate, fc_rate=ns.ff_rate)
+    tr.load_state_dict(torch.load(Path(args.t2mgpt_root) / "pretrained/VQTransformer_corruption05/net_best_fid.pth",
+                       map_location="cpu", weights_only=False)["trans"], strict=True)
+    tr.eval()
+    import torch.nn as nn
+    weights = {n: m.weight.detach().float() for n, m in tr.named_modules()
+               if isinstance(m, nn.Linear) and m.in_features <= 1024}
 
 styles = sorted({b.split("|")[0] for b in buckets} - {"neutral"})
 groups = styles + ["neutral"]
@@ -105,7 +109,7 @@ summary = {
 print(f"\nwithin-style (centered split-half):  {summary['within_style_mean']:+.3f}")
 print(f"between-style (centered, cross-half): {summary['between_style_mean']:+.3f} ± {summary['between_style_sd']:.3f}")
 print(f"style vs neutral (centered):          {summary['style_vs_neutral_mean']:+.3f}")
-out = Path("/data/pmyap24/sac/results/engram_overlap_t2mgpt.json") \
-    if Path("/data/pmyap24/sac").exists() else ROOT / "results" / "engram_overlap_t2mgpt.json"
+out = Path(f"/data/pmyap24/sac/results/engram_overlap_{args.out_name}.json") \
+    if Path("/data/pmyap24/sac").exists() else ROOT / "results" / f"engram_overlap_{args.out_name}.json"
 out.write_text(json.dumps(summary, indent=1))
 print(f"saved {out}")
