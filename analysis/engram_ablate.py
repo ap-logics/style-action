@@ -136,14 +136,21 @@ def main():
             print(f"editing: ablate '{target}' alpha={alpha}", flush=True)
             with torch.no_grad():
                 for name, m in layers.items():
+                    # differential engram: only the style-specific deviation.
+                    # Raw engrams are dominated by shared prompt-processing
+                    # mass (why exp-1 needed centering); subtracting
+                    # E_style - E_neutral targets what distinguishes the style.
                     C_t, n_t = mean_cov([f"{target}|0", f"{target}|1"], name)
+                    C_n, _ = mean_cov(["neutral|0", "neutral|1"], name)
                     C_tot, N_t = mean_cov(all_bks, name)
                     C_tot = 0.5 * (C_tot + C_tot.T)
                     rtol = C_tot.shape[-1] * torch.finfo(torch.float32).eps
                     pinv_tot = torch.linalg.pinv(C_tot, rtol=rtol, hermitian=True)
-                    E = originals[name].cpu().float() @ (0.5 * (C_t + C_t.T)) @ pinv_tot
+                    W0 = originals[name].cpu().float()
+                    dC = 0.5 * (C_t + C_t.T) - 0.5 * (C_n + C_n.T)
+                    E = W0 @ dC @ pinv_tot
                     scale = alpha * (n_t / N_t)
-                    m.weight.copy_((originals[name].cpu().float() - scale * E).to(dev))
+                    m.weight.copy_((W0 - scale * E).to(dev))
 
             Z0_e, ZT_e, n_collapsed = grid_latents()
             entry = {"collapsed_generations": n_collapsed}
