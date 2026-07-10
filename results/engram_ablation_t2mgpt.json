@@ -1,0 +1,50 @@
+{
+ "gently@0.5": {
+  "collapsed_generations": 0,
+  "gently": 1.6313,
+  "carefully": 1.1971,
+  "tiredly": 1.2492,
+  "angrily": 1.5739,
+  "neutral_drift": 1.5284
+ },
+ "gently@1.0": {
+  "collapsed_generations": 0,
+  "gently": 1.8949,
+  "carefully": 0.9631,
+  "tiredly": 1.2617,
+  "angrily": 1.5744,
+  "neutral_drift": 1.9291
+ },
+ "carefully@0.5": {
+  "collapsed_generations": 0,
+  "gently": 1.6114,
+  "carefully": 1.2472,
+  "tiredly": 1.3385,
+  "angrily": 1.566,
+  "neutral_drift": 1.3625
+ },
+ "carefully@1.0": {
+  "collapsed_generations": 5,
+  "gently": 1.3187,
+  "carefully": 1.3709,
+  "tiredly": 1.0323,
+  "angrily": 1.3815,
+  "neutral_drift": 1.4855
+ },
+ "tiredly@0.5": {
+  "collapsed_generations": 1,
+  "gently": 1.5022,
+  "carefully": 0.9948,
+  "tiredly": 1.1558,
+  "angrily": 1.4319,
+  "neutral_drift": 1.3217
+ },
+ "tiredly@1.0": {
+  "collapsed_generations": 59,
+  "gently": 1.3973,
+  "carefully": 0.8753,
+  "tiredly": 0.9818,
+  "angrily": 1.185,
+  "neutral_drift": 1.2811
+ }
+}
