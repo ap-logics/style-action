@@ -74,6 +74,8 @@ def main():
     p.add_argument("--alphas", nargs="+", type=float, default=[0.5, 1.0])
     p.add_argument("--probe_styles", nargs="+",
                    default=["gently", "carefully", "tiredly", "angrily"])
+    p.add_argument("--per_block", action="store_true",
+                   help="ablate one transformer block at a time (localization)")
     args = p.parse_args()
     dev = "cuda" if torch.cuda.is_available() else "cpu"
 
@@ -129,13 +131,24 @@ def main():
     Z0_base, ZT_base, _ = grid_latents()
     d_base = {s: ZT_base[s] - Z0_base for s in args.probe_styles}
 
+    # optional: group layers by transformer block for per-block ablation
+    import re as _re
+    def block_of(name):
+        m = _re.search(r"\.(\d+)\.", name)
+        return m.group(1) if m else "other"
+    blocks = sorted({block_of(n) for n in layers}) if args.per_block else [None]
+
     results = {}
     for target in args.targets:
         # engram of the target style (both parities)
         for alpha in args.alphas:
-            print(f"editing: ablate '{target}' alpha={alpha}", flush=True)
+          for blk in blocks:
+            layer_subset = {n: m for n, m in layers.items()
+                            if blk is None or block_of(n) == blk}
+            tag = f"{target}@{alpha}" + (f"@blk{blk}" if blk is not None else "")
+            print(f"editing: ablate '{tag}' ({len(layer_subset)} layers)", flush=True)
             with torch.no_grad():
-                for name, m in layers.items():
+                for name, m in layer_subset.items():
                     # differential engram: only the style-specific deviation.
                     # Raw engrams are dominated by shared prompt-processing
                     # mass (why exp-1 needed centering); subtracting
@@ -162,10 +175,10 @@ def main():
             drift = float(np.linalg.norm(Z0_e - Z0_base, axis=1).mean() /
                           np.linalg.norm(d_base[target], axis=1).mean())
             entry["neutral_drift"] = round(drift, 4)
-            results[f"{target}@{alpha}"] = entry
+            results[tag] = entry
             tgt = entry[target]
             others = np.mean([entry[s] for s in args.probe_styles if s != target])
-            print(f"  {target}@{alpha}: target ratio {tgt:.3f}, "
+            print(f"  {tag}: target ratio {tgt:.3f}, "
                   f"other styles {others:.3f}, neutral drift {entry['neutral_drift']:.3f}",
                   flush=True)
 
