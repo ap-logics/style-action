@@ -104,18 +104,29 @@ def main():
         with torch.no_grad():
             toks = clip.tokenize([prompt], truncate=True).to(dev)
             feat = clip_model.encode_text(toks).float()
-            idx = tr.sample(feat, if_categorial=False)
+            try:
+                idx = tr.sample(feat, if_categorial=False)
+            except UnboundLocalError:
+                return None                    # model emitted end-token first: collapse
             codes = net.vqvae.quantizer.dequantize(idx)
             return codes[0].mean(dim=0).cpu().numpy()
 
     def grid_latents():
-        Z0 = np.stack([encode(g["neutral"][a]) for a in range(nA)])
-        ZT = {s: np.stack([encode(g["styled"][probe_idx[s]][a]) for a in range(nA)])
+        collapsed = 0
+        def enc(prompt):
+            nonlocal collapsed
+            z = encode(prompt)
+            if z is None:
+                collapsed += 1
+                return np.zeros(512, dtype=np.float32)
+            return z
+        Z0 = np.stack([enc(g["neutral"][a]) for a in range(nA)])
+        ZT = {s: np.stack([enc(g["styled"][probe_idx[s]][a]) for a in range(nA)])
               for s in args.probe_styles}
-        return Z0, ZT
+        return Z0, ZT, collapsed
 
     print("baseline generation ...", flush=True)
-    Z0_base, ZT_base = grid_latents()
+    Z0_base, ZT_base, _ = grid_latents()
     d_base = {s: ZT_base[s] - Z0_base for s in args.probe_styles}
 
     results = {}
@@ -134,8 +145,8 @@ def main():
                     scale = alpha * (n_t / N_t)
                     m.weight.copy_((originals[name].cpu().float() - scale * E).to(dev))
 
-            Z0_e, ZT_e = grid_latents()
-            entry = {}
+            Z0_e, ZT_e, n_collapsed = grid_latents()
+            entry = {"collapsed_generations": n_collapsed}
             for s in args.probe_styles:
                 d_e = ZT_e[s] - Z0_e
                 ratio = float(np.linalg.norm(d_e, axis=1).mean() /
