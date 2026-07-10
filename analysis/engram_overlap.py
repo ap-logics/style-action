@@ -95,7 +95,7 @@ class CovCollector:
             b = self.buckets.setdefault(self.active, {})
             n = self.counts.setdefault(self.active, {})
             for name, c in self._dev_acc.items():
-                cc = c.cpu().half()          # fp16 store halves bucket RAM
+                cc = c.cpu()   # fp32: raw sums overflow fp16 (learned the hard way)
                 if name in b:
                     b[name] += cc
                     n[name] += self._dev_cnt[name]
@@ -124,7 +124,7 @@ class CovCollector:
         tot, cnt = None, 0
         for bk in buckets:
             if bk in self.buckets and name in self.buckets[bk]:
-                c = self.buckets[bk][name].float()
+                c = self.buckets[bk][name]
                 tot = c if tot is None else tot + c
                 cnt += self.counts[bk][name]
         return tot / cnt, cnt
@@ -186,8 +186,9 @@ def main():
 
     for li, name in enumerate(layer_names):
         C_tot, _ = coll.mean_cov(all_buckets, name)
+        C_tot = 0.5 * (C_tot + C_tot.T)
         rtol = C_tot.shape[-1] * torch.finfo(torch.float32).eps
-        pinv_tot = torch.linalg.pinv(C_tot, rtol=rtol)
+        pinv_tot = torch.linalg.pinv(C_tot, rtol=rtol, hermitian=True)
         W = coll.layers[name].weight.detach().float().cpu()
 
         E = {}
