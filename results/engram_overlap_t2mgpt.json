@@ -1,0 +1,25 @@
+{
+ "within_style_mean": 0.2039,
+ "between_style_mean": -0.0155,
+ "between_style_sd": 0.0325,
+ "style_vs_neutral_mean": -0.0154,
+ "within_per_style": {
+  "angrily": 0.2311,
+  "tiredly": 0.0552,
+  "happily": 0.0866,
+  "nervously": 0.2703,
+  "gracefully": 0.2647,
+  "heavily": 0.2641,
+  "confidently": 0.1359,
+  "carefully": 0.2738,
+  "casually": 0.2404,
+  "gently": 0.2759,
+  "cautiously": 0.2362,
+  "calmly": 0.1936,
+  "aggressively": 0.1233,
+  "neutral": 0.1767
+ },
+ "n_layers": 92,
+ "n_actions": 24,
+ "template": -1
+}
