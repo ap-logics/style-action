@@ -95,7 +95,7 @@ class CovCollector:
             b = self.buckets.setdefault(self.active, {})
             n = self.counts.setdefault(self.active, {})
             for name, c in self._dev_acc.items():
-                cc = c.cpu()
+                cc = c.cpu().half()          # fp16 store halves bucket RAM
                 if name in b:
                     b[name] += cc
                     n[name] += self._dev_cnt[name]
@@ -124,7 +124,8 @@ class CovCollector:
         tot, cnt = None, 0
         for bk in buckets:
             if bk in self.buckets and name in self.buckets[bk]:
-                tot = self.buckets[bk][name] if tot is None else tot + self.buckets[bk][name]
+                c = self.buckets[bk][name].float()
+                tot = c if tot is None else tot + c
                 cnt += self.counts[bk][name]
         return tot / cnt, cnt
 
