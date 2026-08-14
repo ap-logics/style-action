@@ -1,0 +1,87 @@
+{
+ "CLIP (input)": {
+  "r": 0.002,
+  "ci95_fisher": [
+   -0.55,
+   0.552
+  ],
+  "n_modifiers": 13,
+  "n_runs": 1
+ },
+ "TMA, HumanML3D": {
+  "r": -0.482,
+  "ci95_fisher": [
+   -0.816,
+   0.094
+  ],
+  "n_modifiers": 13,
+  "n_runs": 1
+ },
+ "TMA, Motion-X": {
+  "r": -0.592,
+  "ci95_fisher": [
+   -0.862,
+   -0.061
+  ],
+  "n_modifiers": 13,
+  "n_runs": 1
+ },
+ "TMA, UniMoCap": {
+  "r": -0.718,
+  "ci95_fisher": [
+   -0.909,
+   -0.276
+  ],
+  "n_modifiers": 13,
+  "n_runs": 1
+ },
+ "MLD": {
+  "r": -0.473,
+  "ci95_fisher": [
+   -0.812,
+   0.106
+  ],
+  "n_modifiers": 13,
+  "n_runs": 5,
+  "r_sd_across_seeds": 0.258
+ },
+ "MDM": {
+  "r": -0.339,
+  "ci95_fisher": [
+   -0.75,
+   0.261
+  ],
+  "n_modifiers": 13,
+  "n_runs": 5,
+  "r_sd_across_seeds": 0.216
+ },
+ "T2M-GPT": {
+  "r": 0.099,
+  "ci95_fisher": [
+   -0.478,
+   0.617
+  ],
+  "n_modifiers": 13,
+  "n_runs": 5,
+  "r_sd_across_seeds": 0.233
+ },
+ "MoMask": {
+  "r": -0.508,
+  "ci95_fisher": [
+   -0.827,
+   0.06
+  ],
+  "n_modifiers": 13,
+  "n_runs": 5,
+  "r_sd_across_seeds": 0.087
+ },
+ "_summary": {
+  "range": [
+   -0.718,
+   0.099
+  ],
+  "n_negative": 6,
+  "n_systems": 8,
+  "note": "no correlation is individually determined at n=13; the defensible claim is that the two axes are nowhere positively coupled, not that they are independent"
+ }
+}

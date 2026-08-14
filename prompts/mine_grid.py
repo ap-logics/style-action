@@ -11,7 +11,11 @@ which serve two purposes:
      frequency to test the OOD-fragility vs representational accounts
 
 Usage:
+  # HumanML3D (POS tags embedded in the caption files):
   python mine_grid.py --texts /path/to/texts --top 40
+  # Motion-X / any plain-text corpus (one caption per line or per file;
+  # requires spaCy: pip install spacy && python -m spacy download en_core_web_sm):
+  python mine_grid.py --texts /path/to/motionx/texts --format plain --top 40
 """
 from __future__ import annotations
 import argparse
@@ -31,29 +35,56 @@ STOP_VERBS = {
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--texts", required=True)
+    p.add_argument("--format", choices=["humanml3d", "plain"], default="humanml3d",
+                   help="humanml3d: '#'-delimited files with word/TAG tokens; "
+                        "plain: untagged captions, tagged with spaCy")
+    p.add_argument("--glob", default="*.txt", help="filename pattern under --texts")
     p.add_argument("--top", type=int, default=40)
     p.add_argument("--out", default="corpus_frequencies.json")
     args = p.parse_args()
+
+    nlp = None
+    if args.format == "plain":
+        import spacy
+        nlp = spacy.load("en_core_web_sm", disable=["parser", "ner", "lemmatizer"])
 
     verb_counts: Counter = Counter()
     adv_counts: Counter = Counter()
     n_captions = 0
 
-    for f in Path(args.texts).glob("*.txt"):
-        for line in f.read_text(errors="ignore").splitlines():
-            parts = line.split("#")
-            if len(parts) < 2:
-                continue
-            n_captions += 1
-            for tok in parts[1].split():
-                if "/" not in tok:
+    def tally(word, tag):
+        word = word.lower()
+        if tag == "VERB" and word.isalpha() and word not in STOP_VERBS:
+            verb_counts[word] += 1
+        elif tag == "ADV" and word.endswith("ly") and word.isalpha():
+            adv_counts[word] += 1
+
+    files = sorted(Path(args.texts).rglob(args.glob))
+    if not files:
+        raise SystemExit(f"no files matching {args.glob} under {args.texts}")
+    if args.format == "humanml3d":
+        for f in files:
+            for line in f.read_text(errors="ignore").splitlines():
+                parts = line.split("#")
+                if len(parts) < 2:
                     continue
-                word, tag = tok.rsplit("/", 1)
-                word = word.lower()
-                if tag == "VERB" and word.isalpha() and word not in STOP_VERBS:
-                    verb_counts[word] += 1
-                elif tag == "ADV" and word.endswith("ly") and word.isalpha():
-                    adv_counts[word] += 1
+                n_captions += 1
+                for tok in parts[1].split():
+                    if "/" not in tok:
+                        continue
+                    word, tag = tok.rsplit("/", 1)
+                    tally(word, tag)
+    else:
+        def caption_stream():
+            for f in files:
+                for line in f.read_text(errors="ignore").splitlines():
+                    line = line.split("#")[0].strip()   # tolerate stray hml3d format
+                    if line:
+                        yield line
+        for doc in nlp.pipe(caption_stream(), batch_size=256):
+            n_captions += 1
+            for tok in doc:
+                tally(tok.text, tok.pos_)
 
     print(f"{n_captions} captions parsed\n")
     print(f"Top {args.top} action verbs:")

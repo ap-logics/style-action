@@ -19,41 +19,20 @@ def action_preservation(
 
 
 def basin_escape_rate(
-    Z_S: np.ndarray,   # (N, d) neutral embeddings
-    Z_T: np.ndarray,   # (N, d) styled embeddings
-    n_actions: int = 8,
-    n_styles: int = 8,
+    Z_S: np.ndarray,   # (n_actions, d) neutral embeddings, one per action
+    Z_T: np.ndarray,   # (n_styles, n_actions, d) styled embeddings
 ) -> tuple[float, np.ndarray]:
     """
-    BER: fraction of (action, style) pairs where the styled embedding
-    is closer to a different action centroid than the neutral embedding.
+    BER: fraction of styled embeddings whose cosine-nearest NEUTRAL embedding
+    belongs to a different action (the paper's definition; matches the inline
+    implementations in pipeline.py / score_hpc.py / score_seeds.py).
 
-    Centroids are computed from Z_S (neutral space).
-    Returns (BER, boolean mask of escaping pairs).
+    Returns (BER, boolean escape mask of shape (n_styles, n_actions)).
     """
-    from sklearn.decomposition import PCA
-
-    # action centroids in neutral space
-    centroids = np.stack([
-        Z_S[ai * n_styles:(ai + 1) * n_styles].mean(axis=0)
-        for ai in range(n_actions)
-    ])  # (n_actions, d)
-
-    def nearest(Z: np.ndarray) -> np.ndarray:
-        # cosine nearest centroid
-        Z_norm = Z / (np.linalg.norm(Z, axis=1, keepdims=True) + 1e-8)
-        C_norm = centroids / (np.linalg.norm(centroids, axis=1, keepdims=True) + 1e-8)
-        return np.argmax(Z_norm @ C_norm.T, axis=1)   # (N,)
-
-    true_labels = np.array([ai for ai in range(n_actions) for _ in range(n_styles)])
-    neutral_nearest = nearest(Z_S)
-    styled_nearest  = nearest(Z_T)
-
-    # escape = styled point lands in a different basin than the neutral point
-    escaped = styled_nearest != true_labels
-    # skip neutral-baseline style (style index 0, every n_styles-th row)
-    neutral_mask = np.array([si == 0 for _ in range(n_actions) for si in range(n_styles)])
-    escaped[neutral_mask] = False
-
-    ber = float(escaped[~neutral_mask].mean())
-    return ber, escaped
+    n_styles, n_actions, _ = Z_T.shape
+    Zs = Z_S / (np.linalg.norm(Z_S, axis=1, keepdims=True) + 1e-8)
+    escaped = np.zeros((n_styles, n_actions), dtype=bool)
+    for j in range(n_styles):
+        Zt = Z_T[j] / (np.linalg.norm(Z_T[j], axis=1, keepdims=True) + 1e-8)
+        escaped[j] = (Zt @ Zs.T).argmax(axis=1) != np.arange(n_actions)
+    return float(escaped.mean()), escaped

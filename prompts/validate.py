@@ -32,7 +32,7 @@ def _embed(texts: list[str], device: str = "cpu"):
 
 def validate(threshold: float = THRESHOLD, device: str = "cpu") -> list[tuple]:
     # embed just the bare action nouns and style adverbs
-    action_terms = [a.replace("a person ", "") for a in ACTIONS]   # "walking", "running" …
+    action_terms = [a.replace("a person is ", "") for a in ACTIONS]   # "walking", "running" …
     style_terms  = [s for s in STYLES if s]                        # skip neutral ""
 
     all_terms = action_terms + style_terms

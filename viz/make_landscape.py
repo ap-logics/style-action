@@ -216,11 +216,16 @@ def progression(models, template, out):
                       linewidth=0.7, arrowsize=0.9)
         ax.scatter(P_S[:, 0], P_S[:, 1], s=100, c="#111", zorder=6,
                    edgecolors="white", linewidths=1.2)
+        cx = 0.5 * (x0 + x1)
         for a, name in enumerate(short):
+            # push labels inward and alternate above/below to avoid collisions
+            ha = "left" if P_S[a, 0] < cx else "right"
+            dx = 7 if ha == "left" else -7
+            dy = 9 if a % 2 == 0 else -13
             ax.annotate(name, P_S[a], textcoords="offset points",
-                        xytext=(8, 8), fontsize=9.5, color="#000",
-                        fontweight="medium", zorder=7,
-                        bbox=dict(fc="white", ec="none", alpha=0.92, pad=1.4))
+                        xytext=(dx, dy), fontsize=8.5, color="#000", ha=ha,
+                        fontweight="medium", zorder=7, annotation_clip=True,
+                        bbox=dict(fc="white", ec="none", alpha=0.92, pad=1.2))
         n_esc = int(esc.sum())
         label = {"clip": "CLIP (input)", "mdm": "MDM",
                  "t2mgpt": "T2M-GPT"}.get(model, model.upper())

@@ -1,0 +1,44 @@
+{
+  "clip_consistency": 0.6442998051643372,
+  "template": 0,
+  "systems": {
+    "mdm_v2": {
+      "r": 0.3983611762523651,
+      "c_raw": 0.04044999480247498,
+      "d": 263,
+      "ceiling_gaussian": 0.2578698139245986,
+      "ceiling_gaussian_sd": 0.0016877320113406933,
+      "ceiling_empirical": null,
+      "ratio_ceiling_over_raw": 6.375027121358754
+    },
+    "mld_v2": {
+      "r": 0.36283746361732483,
+      "c_raw": 0.05883108228445053,
+      "d": 256,
+      "ceiling_gaussian": 0.23481954300864755,
+      "ceiling_gaussian_sd": 0.0006397789756148617,
+      "ceiling_empirical": null,
+      "ratio_ceiling_over_raw": 3.991419737500087
+    },
+    "t2mgpt_v2": {
+      "r": 0.391183078289032,
+      "c_raw": 0.003661052539246157,
+      "d": 512,
+      "ceiling_gaussian": 0.25301142179156194,
+      "ceiling_gaussian_sd": 0.0009811764735886005,
+      "ceiling_empirical": 0.25396588623523714,
+      "ceiling_empirical_sd": 0.0033927018409139168,
+      "ratio_ceiling_over_raw": 69.3696371501762
+    },
+    "momask_v2": {
+      "r": 0.6844657063484192,
+      "c_raw": 0.01829833574593067,
+      "d": 512,
+      "ceiling_gaussian": 0.44484366875928705,
+      "ceiling_gaussian_sd": 0.000822708834408143,
+      "ceiling_empirical": 0.44442313313484194,
+      "ceiling_empirical_sd": 0.001274496816855591,
+      "ratio_ceiling_over_raw": 24.287625896998655
+    }
+  }
+}

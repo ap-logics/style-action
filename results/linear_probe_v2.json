@@ -1,0 +1,50 @@
+{
+ "CLIP (input)": {
+  "direction_recovery": 0.7908301583658426,
+  "steering_success": 1.0,
+  "n_runs": 1,
+  "n_actions": 24
+ },
+ "TMA, HumanML3D": {
+  "direction_recovery": 0.33880617540443125,
+  "steering_success": 0.9487179487179487,
+  "n_runs": 1,
+  "n_actions": 24
+ },
+ "TMA, Motion-X": {
+  "direction_recovery": 0.3465453923699664,
+  "steering_success": 0.9326923076923077,
+  "n_runs": 1,
+  "n_actions": 24
+ },
+ "TMA, UniMoCap": {
+  "direction_recovery": 0.6063933689624835,
+  "steering_success": 1.0,
+  "n_runs": 1,
+  "n_actions": 24
+ },
+ "MLD": {
+  "direction_recovery": 0.17401479344392637,
+  "steering_success": 0.9737179487179487,
+  "n_runs": 5,
+  "n_actions": 24
+ },
+ "MDM": {
+  "direction_recovery": 0.1047881314573225,
+  "steering_success": 0.7057692307692307,
+  "n_runs": 5,
+  "n_actions": 24
+ },
+ "T2M-GPT": {
+  "direction_recovery": 0.012283842898267545,
+  "steering_success": 0.3381410256410257,
+  "n_runs": 6,
+  "n_actions": 24
+ },
+ "MoMask": {
+  "direction_recovery": 0.06737771289192143,
+  "steering_success": 0.3762820512820513,
+  "n_runs": 5,
+  "n_actions": 24
+ }
+}

@@ -1,0 +1,42 @@
+{
+ "ap_overall": 0.7083,
+ "chance": 0.0417,
+ "per_style": {
+  "angrily": 0.75,
+  "tiredly": 0.5833,
+  "happily": 0.6667,
+  "nervously": 0.6667,
+  "gracefully": 0.7083,
+  "heavily": 0.75,
+  "confidently": 0.7917,
+  "carefully": 0.75,
+  "casually": 0.7917,
+  "gently": 0.5417,
+  "cautiously": 0.75,
+  "calmly": 0.875,
+  "aggressively": 0.5833
+ },
+ "misses_per_action": {
+  "a person is walking": 2,
+  "a person is jogging": 4,
+  "a person is jumping": 7,
+  "a person is sitting down": 8,
+  "a person is standing up": 11,
+  "a person is turning around": 3,
+  "a person is picking something up": 3,
+  "a person is throwing": 3,
+  "a person is stretching": 8,
+  "a person is squatting": 3,
+  "a person is swinging their arms": 1,
+  "a person is pushing something": 4,
+  "a person is dancing": 8,
+  "a person is lifting something": 9,
+  "a person is reaching forward": 3,
+  "a person is raising their arms": 2,
+  "a person is lowering their arms": 5,
+  "a person is placing something down": 7
+ },
+ "n_styles": 13,
+ "n_actions": 24,
+ "seed": 46
+}

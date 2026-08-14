@@ -1,0 +1,66 @@
+{
+  "clip_v2": {
+    "label": "CLIP (input)",
+    "consistency": 0.6442998051643372,
+    "sqrt_C": 0.8026828795759489,
+    "measured_shared_amplitude": 0.8101633787155151,
+    "decodable": 1.0,
+    "consistency_corrected": null
+  },
+  "opentma_h3d_v2": {
+    "label": "TMA, HumanML3D",
+    "consistency": 0.1493423879146576,
+    "sqrt_C": 0.38644842853174804,
+    "measured_shared_amplitude": 0.4257180988788605,
+    "decodable": 0.71,
+    "consistency_corrected": null
+  },
+  "opentma_motionx_v2": {
+    "label": "TMA, Motion-X",
+    "consistency": 0.15716196596622467,
+    "sqrt_C": 0.39643658505014984,
+    "measured_shared_amplitude": 0.4327273964881897,
+    "decodable": 0.73,
+    "consistency_corrected": null
+  },
+  "opentma_unimocap_v2": {
+    "label": "TMA, UniMoCap",
+    "consistency": 0.3932337462902069,
+    "sqrt_C": 0.6270835241737793,
+    "measured_shared_amplitude": 0.646479070186615,
+    "decodable": 0.98,
+    "consistency_corrected": null
+  },
+  "mld_v2": {
+    "label": "MLD",
+    "consistency": 0.05883108228445053,
+    "sqrt_C": 0.2425511951824821,
+    "measured_shared_amplitude": 0.3114297270774841,
+    "decodable": 0.68,
+    "consistency_corrected": 0.162
+  },
+  "mdm_v2": {
+    "label": "MDM",
+    "consistency": 0.040449995547533035,
+    "sqrt_C": 0.20112184254210938,
+    "measured_shared_amplitude": 0.28121289014816286,
+    "decodable": 0.27,
+    "consistency_corrected": 0.101
+  },
+  "momask_v2": {
+    "label": "MoMask",
+    "consistency": 0.01829833574593067,
+    "sqrt_C": 0.1352713411847856,
+    "measured_shared_amplitude": 0.2405673712491989,
+    "decodable": 0.19,
+    "consistency_corrected": 0.027
+  },
+  "t2mgpt_v2": {
+    "label": "T2M-GPT",
+    "consistency": 0.00366105260909535,
+    "sqrt_C": 0.0605066327694357,
+    "measured_shared_amplitude": 0.20782749652862548,
+    "decodable": 0.13,
+    "consistency_corrected": 0.009
+  }
+}

@@ -33,10 +33,15 @@ from style_vectors import style_vectors, consistency
 from base import LatentExtractor
 
 
-def score_run(run_dir: Path) -> dict:
-    """One seed x template directory -> scalar metrics."""
-    Z_S = np.load(run_dir / "Z_S.npy")
-    Z_T = np.load(run_dir / "Z_T.npy")
+def score_run(run_dir: Path, suffix: str = "") -> dict:
+    """One seed x template directory -> scalar metrics.
+
+    suffix picks the latent variant. MoMask writes a second pair,
+    Z_S_base/Z_T_base, holding the residual level-0 codes only. Scoring both
+    compares a full residual stack against the plain-VQ latent inside one model.
+    """
+    Z_S = np.load(run_dir / f"Z_S{suffix}.npy")
+    Z_T = np.load(run_dir / f"Z_T{suffix}.npy")
     K_S = LatentExtractor.cosine_kernel(Z_S)
     tau, _ = tau_selection(K_S)
 
@@ -62,6 +67,8 @@ def score_run(run_dir: Path) -> dict:
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--model", required=True)
+    p.add_argument("--suffix", default="",
+                   help="latent variant, e.g. _base for MoMask level-0 codes")
     args = p.parse_args()
 
     root = Path(__file__).resolve().parents[1] / "results" / args.model
@@ -75,7 +82,7 @@ def main():
         all_runs[sd.name] = {}
         for td in sorted(d for d in sd.iterdir()
                          if d.is_dir() and d.name.isdigit()):
-            all_runs[sd.name][td.name] = score_run(td)
+            all_runs[sd.name][td.name] = score_run(td, args.suffix)
             m = all_runs[sd.name][td.name]
             print(f"{sd.name} t{td.name}: CKA {m['cka']:.3f}  "
                   f"GED {m['ged']:.3f}  BER {m['ber']:.3f}  "
@@ -88,20 +95,21 @@ def main():
         pooled = [all_runs[s][t][metric] for s in all_runs for t in all_runs[s]]
         summary[metric] = {
             "primary_template_mean": round(float(np.mean(primary)), 4),
-            "primary_template_sd": round(float(np.std(primary)), 4),
+            "primary_template_sd": round(float(np.std(primary, ddof=1)), 4),
             "pooled_mean": round(float(np.mean(pooled)), 4),
-            "pooled_sd": round(float(np.std(pooled)), 4),
+            "pooled_sd": round(float(np.std(pooled, ddof=1)), 4),
             "n_seeds": len(all_runs), "n_templates": len(templates),
         }
 
     greedy = root / "greedy"
     if greedy.exists():
         summary["greedy_reference"] = {
-            t.name: {k: round(v, 4) for k, v in score_run(t).items()
+            t.name: {k: round(v, 4) for k, v in score_run(t, args.suffix).items()
                      if isinstance(v, float)}
             for t in sorted(greedy.iterdir()) if t.is_dir() and t.name.isdigit()}
 
-    (root / "seed_summary.json").write_text(json.dumps(
+    out = root / f"seed_summary{args.suffix}.json"
+    out.write_text(json.dumps(
         {"per_run": all_runs, "summary": summary}, indent=1))
     print(f"\n{args.model} (primary template, mean ± sd over "
           f"{len(all_runs)} seeds):")
@@ -109,7 +117,7 @@ def main():
         s = summary[metric]
         print(f"  {metric:<12} {s['primary_template_mean']:.3f} "
               f"± {s['primary_template_sd']:.3f}")
-    print(f"saved {root}/seed_summary.json")
+    print(f"saved {out}")
 
 
 if __name__ == "__main__":

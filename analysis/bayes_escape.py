@@ -97,6 +97,12 @@ def main():
                           target_accept=0.95, progressbar=False,
                           random_seed=7)
 
+    np.save(ROOT / "results" / "bayes_p_model_draws.npy",
+            trace.posterior["p_model"].values)   # (chain, draw, model)
+    np.save(ROOT / "results" / "bayes_p_style_draws.npy",
+            (1 / (1 + np.exp(-(trace.posterior["alpha"].values[..., :, None]
+                               + trace.posterior["beta"].values)))))
+
     summ = az.summary(trace, var_names=["p_model", "sigma_style",
                                         "sigma_action"], ci_prob=0.94)
     print(summ.to_string())

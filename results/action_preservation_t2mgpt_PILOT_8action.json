@@ -1,0 +1,14 @@
+{
+ "ap": 0.6429,
+ "per_action": {
+  "walking": 0.857,
+  "running": 0.429,
+  "jumping": 0.857,
+  "sitting down": 1.0,
+  "waving their hand": 1.0,
+  "kicking": 0.429,
+  "throwing": 0.143,
+  "dancing": 0.429
+ },
+ "chance": 0.125
+}

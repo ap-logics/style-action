@@ -1,0 +1,202 @@
+{
+ "CLIP (input)": {
+  "eps_rot": 0.0025,
+  "eps_tra": 0.0119,
+  "rho_rot": 0.9277,
+  "rho_tra": 0.64,
+  "n_runs": 1,
+  "eps_rot_null95": [
+   0.014,
+   0.018
+  ],
+  "eps_tra_null95": [
+   0.096,
+   0.118
+  ],
+  "rho_rot_null95": [
+   0.863,
+   0.895
+  ],
+  "rho_tra_null95": [
+   0.16,
+   0.189
+  ]
+ },
+ "TMA, HumanML3D": {
+  "eps_rot": 0.0667,
+  "eps_tra": 0.2211,
+  "rho_rot": 0.7526,
+  "rho_tra": 0.1782,
+  "n_runs": 1,
+  "eps_rot_null95": [
+   0.171,
+   0.21
+  ],
+  "eps_tra_null95": [
+   0.805,
+   0.956
+  ],
+  "rho_rot_null95": [
+   0.77,
+   0.82
+  ],
+  "rho_tra_null95": [
+   0.05,
+   0.059
+  ]
+ },
+ "TMA, Motion-X": {
+  "eps_rot": 0.0621,
+  "eps_tra": 0.1678,
+  "rho_rot": 0.704,
+  "rho_tra": 0.1824,
+  "n_runs": 1,
+  "eps_rot_null95": [
+   0.196,
+   0.242
+  ],
+  "eps_tra_null95": [
+   0.794,
+   0.977
+  ],
+  "rho_rot_null95": [
+   0.733,
+   0.794
+  ],
+  "rho_tra_null95": [
+   0.04,
+   0.049
+  ]
+ },
+ "TMA, UniMoCap": {
+  "eps_rot": 0.0232,
+  "eps_tra": 0.0938,
+  "rho_rot": 0.8582,
+  "rho_tra": 0.4116,
+  "n_runs": 1,
+  "eps_rot_null95": [
+   0.063,
+   0.076
+  ],
+  "eps_tra_null95": [
+   0.336,
+   0.396
+  ],
+  "rho_rot_null95": [
+   0.821,
+   0.858
+  ],
+  "rho_tra_null95": [
+   0.145,
+   0.166
+  ]
+ },
+ "MLD": {
+  "eps_rot": 0.0263,
+  "eps_tra": 0.171,
+  "rho_rot": 0.8596,
+  "rho_tra": 0.0825,
+  "n_runs": 5,
+  "eps_rot_sd": 0.0029,
+  "eps_tra_sd": 0.0186,
+  "rho_rot_sd": 0.0095,
+  "rho_tra_sd": 0.0057,
+  "eps_rot_null95": [
+   0.139,
+   0.173
+  ],
+  "eps_tra_null95": [
+   0.823,
+   1.013
+  ],
+  "rho_rot_null95": [
+   0.81,
+   0.857
+  ],
+  "rho_tra_null95": [
+   0.019,
+   0.023
+  ]
+ },
+ "MDM": {
+  "eps_rot": 0.1242,
+  "eps_tra": 0.2772,
+  "rho_rot": 0.5783,
+  "rho_tra": 0.0653,
+  "n_runs": 5,
+  "eps_rot_sd": 0.0041,
+  "eps_tra_sd": 0.0099,
+  "rho_rot_sd": 0.0198,
+  "rho_tra_sd": 0.0043,
+  "eps_rot_null95": [
+   0.273,
+   0.331
+  ],
+  "eps_tra_null95": [
+   0.81,
+   1.019
+  ],
+  "rho_rot_null95": [
+   0.635,
+   0.713
+  ],
+  "rho_tra_null95": [
+   0.019,
+   0.024
+  ]
+ },
+ "T2M-GPT": {
+  "eps_rot": 0.1283,
+  "eps_tra": 0.2234,
+  "rho_rot": 0.4467,
+  "rho_tra": 0.0445,
+  "n_runs": 5,
+  "eps_rot_sd": 0.0078,
+  "eps_tra_sd": 0.0129,
+  "rho_rot_sd": 0.0177,
+  "rho_tra_sd": 0.0038,
+  "eps_rot_null95": [
+   0.2,
+   0.249
+  ],
+  "eps_tra_null95": [
+   0.381,
+   0.523
+  ],
+  "rho_rot_null95": [
+   0.438,
+   0.585
+  ],
+  "rho_tra_null95": [
+   0.017,
+   0.023
+  ]
+ },
+ "MoMask": {
+  "eps_rot": 0.1194,
+  "eps_tra": 0.2241,
+  "rho_rot": 0.483,
+  "rho_tra": 0.0479,
+  "n_runs": 5,
+  "eps_rot_sd": 0.0043,
+  "eps_tra_sd": 0.005,
+  "rho_rot_sd": 0.0206,
+  "rho_tra_sd": 0.0038,
+  "eps_rot_null95": [
+   0.167,
+   0.198
+  ],
+  "eps_tra_null95": [
+   0.353,
+   0.45
+  ],
+  "rho_rot_null95": [
+   0.506,
+   0.613
+  ],
+  "rho_tra_null95": [
+   0.028,
+   0.035
+  ]
+ }
+}

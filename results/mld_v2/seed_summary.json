@@ -149,33 +149,33 @@
  "summary": {
   "cka": {
    "primary_template_mean": 0.9542,
-   "primary_template_sd": 0.0063,
+   "primary_template_sd": 0.0071,
    "pooled_mean": 0.9479,
-   "pooled_sd": 0.0093,
+   "pooled_sd": 0.0096,
    "n_seeds": 5,
    "n_templates": 3
   },
   "ged": {
    "primary_template_mean": 0.129,
-   "primary_template_sd": 0.0115,
+   "primary_template_sd": 0.0129,
    "pooled_mean": 0.139,
-   "pooled_sd": 0.0143,
+   "pooled_sd": 0.0148,
    "n_seeds": 5,
    "n_templates": 3
   },
   "ber": {
    "primary_template_mean": 0.0308,
-   "primary_template_sd": 0.0138,
+   "primary_template_sd": 0.0155,
    "pooled_mean": 0.0348,
-   "pooled_sd": 0.014,
+   "pooled_sd": 0.0145,
    "n_seeds": 5,
    "n_templates": 3
   },
   "consistency": {
    "primary_template_mean": 0.0588,
-   "primary_template_sd": 0.0058,
+   "primary_template_sd": 0.0064,
    "pooled_mean": 0.0686,
-   "pooled_sd": 0.0129,
+   "pooled_sd": 0.0134,
    "n_seeds": 5,
    "n_templates": 3
   }

@@ -26,7 +26,7 @@ import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
 SYSTEMS = ["clip", "opentma_h3d", "opentma_motionx", "opentma_unimocap",
-           "mdm", "t2mgpt"]
+           "mdm", "t2mgpt", "momask_v2/seed42"]
 
 
 def load(system: str):

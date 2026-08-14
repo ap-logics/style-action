@@ -87,6 +87,12 @@ def main():
         t = g["template"]
         out = Path(cli.out) / str(t)
         out.mkdir(parents=True, exist_ok=True)
+        _m = out / "meta.json"
+        if _m.exists():
+            import json as _json
+            _old = _json.loads(_m.read_text()).get("seed")
+            if _old is not None and _old != seed:
+                raise SystemExit(f"refusing to overwrite {out}: existing seed {_old} != {seed}; use a seed-specific --out")
         t0 = time.time()
 
         print(f"[template {t}] neutral row ...", flush=True)

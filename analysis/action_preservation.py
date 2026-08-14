@@ -70,15 +70,26 @@ def main():
 
     proto = np.stack([decode(tokens["neutral"][a]) for a in range(n_actions)])
 
+    proto_n = proto / (np.linalg.norm(proto, axis=1, keepdims=True) + 1e-8)
+
     def nearest(m):
         return int(np.linalg.norm(proto - m[None], axis=1).argmin())
 
+    def nearest_cos(m):
+        mn = m / (np.linalg.norm(m) + 1e-8)
+        return int((proto_n @ mn).argmax())
+
     preserved = np.zeros((n_styles, n_actions), dtype=bool)
+    preserved_cos = np.zeros((n_styles, n_actions), dtype=bool)
     for j in range(n_styles):
         for a in range(n_actions):
-            preserved[j, a] = nearest(decode(tokens["styled"][j][a])) == a
+            m = decode(tokens["styled"][j][a])
+            preserved[j, a] = nearest(m) == a
+            preserved_cos[j, a] = nearest_cos(m) == a
 
     ap = float(preserved.mean())
+    ap_cos = float(preserved_cos.mean())
+    print(f"  cosine-metric AP = {ap_cos:.3f}")
     per_action = {meta["actions"][a].replace("a person is ", ""):
                   round(float(preserved[:, a].mean()), 3) for a in range(n_actions)}
     print(f"{args.results}: motion-space AP = {ap:.3f} "
@@ -86,7 +97,7 @@ def main():
     worst = sorted(per_action.items(), key=lambda x: x[1])[:3]
     print(f"  lowest-AP actions: {worst}")
     (ROOT / "results" / f"action_preservation_{args.results}.json").write_text(
-        json.dumps({"ap": round(ap, 4), "per_action": per_action,
+        json.dumps({"ap": round(ap, 4), "ap_cos": round(ap_cos, 4), "per_action": per_action,
                     "chance": round(1 / n_actions, 4)}, indent=1))
     print(f"saved results/action_preservation_{args.results}.json")
 

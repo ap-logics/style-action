@@ -1,0 +1,24 @@
+{
+ "mode": "random",
+ "seed": 3,
+ "within_style_mean": 0.2633,
+ "between_style_mean": -0.0206,
+ "between_style_sd": 0.0285,
+ "within_per_style": {
+  "aggressively": 0.2248,
+  "angrily": 0.2592,
+  "calmly": 0.2908,
+  "carefully": 0.3641,
+  "casually": 0.1896,
+  "cautiously": 0.3367,
+  "confidently": 0.2879,
+  "gently": 0.2891,
+  "gracefully": 0.2644,
+  "happily": 0.2308,
+  "heavily": 0.2803,
+  "nervously": 0.2703,
+  "tiredly": 0.135,
+  "neutral": 0.1929
+ },
+ "n_layers": 21
+}
