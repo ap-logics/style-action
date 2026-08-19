@@ -1,0 +1,12 @@
+{
+ "transplant": {
+  "action_retention": 0.9679,
+  "style_alignment_mean": 0.0091,
+  "style_alignment_sd": 0.405
+ },
+ "oracle": {
+  "action_retention": 0.5962,
+  "style_alignment_mean": 0.7774,
+  "style_alignment_sd": 0.2558
+ }
+}

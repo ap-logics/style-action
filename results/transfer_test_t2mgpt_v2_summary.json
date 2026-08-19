@@ -1,0 +1,13 @@
+{
+ "n_seeds": 5,
+ "oracle": {
+  "action_retention": 0.6282,
+  "style_alignment": 0.7612,
+  "style_alignment_sd_across_seeds": 0.012
+ },
+ "transplant": {
+  "action_retention": 0.9782,
+  "style_alignment": 0.0048,
+  "style_alignment_sd_across_seeds": 0.0246
+ }
+}

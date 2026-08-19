@@ -1,0 +1,26 @@
+{
+  "mld": {
+    "non_manner_consistency": 0.0456,
+    "non_manner_consistency_sd": 0.0058,
+    "manner_consistency": 0.059,
+    "cka": 0.959,
+    "escape": 0.0263,
+    "n_seeds": 5
+  },
+  "t2mgpt": {
+    "non_manner_consistency": 0.0039,
+    "non_manner_consistency_sd": 0.0,
+    "manner_consistency": 0.004,
+    "cka": 0.6179,
+    "escape": 0.5481,
+    "n_seeds": 5
+  },
+  "momask": {
+    "non_manner_consistency": 0.0079,
+    "non_manner_consistency_sd": 0.0028,
+    "manner_consistency": 0.018,
+    "cka": 0.4922,
+    "escape": 0.5506,
+    "n_seeds": 5
+  }
+}

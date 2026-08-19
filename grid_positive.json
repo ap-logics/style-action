@@ -1,0 +1,127 @@
+[
+ {
+  "template": 0,
+  "neutral": [
+   "a person is walking",
+   "a person is running",
+   "a person is jogging",
+   "a person is jumping",
+   "a person is turning around",
+   "a person is leaning forward",
+   "a person is stepping sideways",
+   "a person is dancing",
+   "a person is crawling",
+   "a person is marching",
+   "a person is skipping",
+   "a person is sliding"
+  ],
+  "styled": [
+   [
+    "a person is walking forwards",
+    "a person is running forwards",
+    "a person is jogging forwards",
+    "a person is jumping forwards",
+    "a person is turning around forwards",
+    "a person is leaning forward forwards",
+    "a person is stepping sideways forwards",
+    "a person is dancing forwards",
+    "a person is crawling forwards",
+    "a person is marching forwards",
+    "a person is skipping forwards",
+    "a person is sliding forwards"
+   ],
+   [
+    "a person is walking backwards",
+    "a person is running backwards",
+    "a person is jogging backwards",
+    "a person is jumping backwards",
+    "a person is turning around backwards",
+    "a person is leaning forward backwards",
+    "a person is stepping sideways backwards",
+    "a person is dancing backwards",
+    "a person is crawling backwards",
+    "a person is marching backwards",
+    "a person is skipping backwards",
+    "a person is sliding backwards"
+   ],
+   [
+    "a person is walking to the left",
+    "a person is running to the left",
+    "a person is jogging to the left",
+    "a person is jumping to the left",
+    "a person is turning around to the left",
+    "a person is leaning forward to the left",
+    "a person is stepping sideways to the left",
+    "a person is dancing to the left",
+    "a person is crawling to the left",
+    "a person is marching to the left",
+    "a person is skipping to the left",
+    "a person is sliding to the left"
+   ],
+   [
+    "a person is walking to the right",
+    "a person is running to the right",
+    "a person is jogging to the right",
+    "a person is jumping to the right",
+    "a person is turning around to the right",
+    "a person is leaning forward to the right",
+    "a person is stepping sideways to the right",
+    "a person is dancing to the right",
+    "a person is crawling to the right",
+    "a person is marching to the right",
+    "a person is skipping to the right",
+    "a person is sliding to the right"
+   ],
+   [
+    "a person is walking in a circle",
+    "a person is running in a circle",
+    "a person is jogging in a circle",
+    "a person is jumping in a circle",
+    "a person is turning around in a circle",
+    "a person is leaning forward in a circle",
+    "a person is stepping sideways in a circle",
+    "a person is dancing in a circle",
+    "a person is crawling in a circle",
+    "a person is marching in a circle",
+    "a person is skipping in a circle",
+    "a person is sliding in a circle"
+   ],
+   [
+    "a person is walking in place",
+    "a person is running in place",
+    "a person is jogging in place",
+    "a person is jumping in place",
+    "a person is turning around in place",
+    "a person is leaning forward in place",
+    "a person is stepping sideways in place",
+    "a person is dancing in place",
+    "a person is crawling in place",
+    "a person is marching in place",
+    "a person is skipping in place",
+    "a person is sliding in place"
+   ]
+  ],
+  "actions": [
+   "a person is walking",
+   "a person is running",
+   "a person is jogging",
+   "a person is jumping",
+   "a person is turning around",
+   "a person is leaning forward",
+   "a person is stepping sideways",
+   "a person is dancing",
+   "a person is crawling",
+   "a person is marching",
+   "a person is skipping",
+   "a person is sliding"
+  ],
+  "styles": [
+   "forwards",
+   "backwards",
+   "to the left",
+   "to the right",
+   "in a circle",
+   "in place"
+  ]
+ }
+]

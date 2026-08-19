@@ -1,0 +1,40 @@
+{
+  "shared_actions": [
+    "walking",
+    "running",
+    "jogging",
+    "jumping",
+    "turning around",
+    "leaning forward",
+    "stepping sideways",
+    "dancing"
+  ],
+  "consistency": {
+    "CLIP": {
+      "heading": 0.6378980278968811,
+      "manner": 0.6599543690681458
+    },
+    "MLD": {
+      "heading": 0.10391578674316407,
+      "manner": 0.07190633341670036
+    },
+    "MoMask": {
+      "heading": 0.09831397086381913,
+      "manner": 0.05613423809409142
+    },
+    "T2M-GPT": {
+      "heading": 0.024915525689721107,
+      "manner": 0.006367292255163193
+    }
+  },
+  "null_band": {
+    "256": [
+      -0.022135264627950478,
+      0.02427746198115384
+    ],
+    "512": [
+      -0.015980190007351347,
+      0.016575823042856385
+    ]
+  }
+}
