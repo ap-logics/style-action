@@ -15,7 +15,15 @@ properties it could have:
   consistency.
 
 Neither implies the other, and only the second is what a steering vector can
-use. Everything is measured on frozen public checkpoints against a raw CLIP
+use.
+
+![Two properties a styled representation could have](assets/two-properties.gif)
+
+*Left: styling turns the action configuration. Every pairwise angle survives, so
+the model still knows which action it is doing, but each action is carried off in
+its own direction. Right: styling slides it. Every action moves the same way by
+the same amount, which is what a steering vector needs, but the angles close up.
+Source in `assets/src/anim.tex`.* Everything is measured on frozen public checkpoints against a raw CLIP
 text-encoder control. Nothing is retrained.
 
 ## Cluster paths

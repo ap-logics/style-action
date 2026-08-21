@@ -4,3 +4,8 @@ __pycache__/
 logs/
 results/*/motions/
 *_debug.npy
+
+# animation build artefacts
+assets/src/*.pdf
+assets/src/*.aux
+assets/src/*.log
