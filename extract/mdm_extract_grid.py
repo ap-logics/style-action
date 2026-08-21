@@ -15,7 +15,7 @@ Output (per template t):
 
 Usage:
   python mdm_extract_grid.py --model_path save/humanml_enc_512_50steps/model000750000.pt \
-      --grid grid_all_templates.json --out /data/pmyap24/sac/results/mdm --seed 42
+      --grid grid_all_templates.json --out $SAC_ROOT/results/mdm --seed 42
 """
 import json
 import time

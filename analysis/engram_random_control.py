@@ -8,8 +8,11 @@ separability. Run with the same cached covariances as the real probe.
 """
 import argparse, collections, json, sys
 from argparse import Namespace
+import os
 from pathlib import Path
 import numpy as np, torch
+
+SAC_ROOT = os.environ.get("SAC_ROOT") or f"/data/{os.environ.get('USER','')}/sac"
 
 HP = dict(nb_code=512, code_dim=512, output_emb_width=512, down_t=2,
           stride_t=2, width=512, depth=3, dilation_growth_rate=3,
@@ -112,7 +115,7 @@ summary = {
     "between_style_sd": round(float(np.std(between)), 4),
     "within_per_style": within, "n_layers": len(layer_names),
 }
-out = Path("/data/pmyap24/sac/results") / f"engram_control_{args.out_name}.json"
+out = Path(f"{SAC_ROOT}/results") / f"engram_control_{args.out_name}.json"
 out.write_text(json.dumps(summary, indent=1))
 print(f"within {summary['within_style_mean']:+.3f}  between {summary['between_style_mean']:+.3f} ± {summary['between_style_sd']:.3f}")
 print(f"saved {out}")

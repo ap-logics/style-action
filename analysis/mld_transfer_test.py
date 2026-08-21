@@ -35,9 +35,9 @@ Run from the MLD repo root:
 
   python mld_transfer_test.py --cfg configs/config_mld_humanml3d.yaml \
       --cfg_assets configs/assets.yaml \
-      --latents /data/pmyap24/sac/results_v2/mld_v2 \
+      --latents $SAC_ROOT/results_v2/mld_v2 \
       --template 0 --seeds 42,43,44,45,46 \
-      --out /data/pmyap24/sac/results/transfer_test_mld.json
+      --out $SAC_ROOT/results/transfer_test_mld.json
 """
 import json
 import sys

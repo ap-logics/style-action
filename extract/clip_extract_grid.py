@@ -7,7 +7,7 @@ grid. Writes {out}/clip/{template}/Z_S.npy, Z_T.npy, meta.json.
 
 Usage:
   python extract/clip_extract_grid.py --grid grid_compound.json \
-      --out /data/pmyap24/sac/results_compound
+      --out $SAC_ROOT/results_compound
 """
 from __future__ import annotations
 import json

@@ -1,10 +1,33 @@
 # Style-Action Coupling — Evaluation Pipeline
 
-Diagnostic toolkit for the paper *Diagnosing Style-Action Coupling in
-Text-to-Motion Models*. Measures whether style conditioning preserves the
-action-by-action structure of a text-to-motion model's latent space, using
-CKA, GED, style-vector consistency, and Action Preservation, against a raw
-CLIP text-encoder control.
+Diagnostic toolkit for the paper *Invariance without Equivariance: Style-Action
+Coupling in Text-to-Motion*.
+
+The pipeline asks what transformation style conditioning applies to a
+text-to-motion model's internal arrangement of actions, and separates two
+properties it could have:
+
+- **Relational invariance** — styling preserves every pairwise similarity among
+  actions, so the styled configuration is an orthogonal image of the neutral
+  one. Read by CKA, a graph edit surrogate, and basin escape rate.
+- **Directional equivariance** — the style displacements share a direction
+  across actions, so styling acts as one translation. Read by style-vector
+  consistency.
+
+Neither implies the other, and only the second is what a steering vector can
+use. Everything is measured on frozen public checkpoints against a raw CLIP
+text-encoder control. Nothing is retrained.
+
+## Cluster paths
+
+Scripts that write to a cluster scratch area resolve it from the environment:
+
+```bash
+export SAC_ROOT=/data/$USER/sac      # defaults to this if unset
+```
+
+If `$SAC_ROOT` does not exist on disk, the scripts fall back to writing under
+the repository's own `results/`, so the pipeline runs unchanged on a laptop.
 
 ## Repository layout
 
@@ -160,3 +183,15 @@ sbatch --export=MODEL=t2mgpt --dependency=afterok:$GEN_T2M slurm/score.sh
 
 `results/clip/report.json` and `results/clip/robustness.json` are committed
 as the reference run.
+
+## What is committed
+
+`results/` and the `results_*` trees hold the latents and per-run reports
+behind the numbers in the paper, so the analysis scripts can be re-run without
+GPU time. The raw `.npy` latents are the bulk of the repository size; the
+`report.json` files alone are enough to reproduce every figure and table.
+
+## Citation
+
+The paper is under review. Please check back for a citation, or open an issue
+if you want to use this before then.

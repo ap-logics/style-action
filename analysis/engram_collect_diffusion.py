@@ -11,7 +11,7 @@ stage (engram_compute.py --cache ... ) then produces the overlap numbers.
 CFG is left on, as in real sampling; its unconditional component is nearly
 identical across buckets and is removed by the centred-overlap analysis.
 
-Usage (from /data/pmyap24/sac):
+Usage (from $SAC_ROOT):
   python analysis/engram_collect_diffusion.py --model mld \
       --grid grid_v2_all_templates.json
   python analysis/engram_collect_diffusion.py --model mdm \
@@ -27,6 +27,8 @@ from pathlib import Path
 import numpy as np
 import torch
 import torch.nn as nn
+
+SAC_ROOT = os.environ.get("SAC_ROOT") or f"/data/{os.environ.get('USER','')}/sac"
 
 MAX_IN = 1024
 EXCLUDE = ("clip", "text_encoder", "vae", "clip_model")   # non-motion submodules
@@ -83,7 +85,7 @@ class CovCollector:
 
 def make_mdm_runner(dev):
     """Returns (collector_target_module, run(prompts) callable)."""
-    repo = "/data/pmyap24/sac/motion-diffusion-model"
+    repo = f"{SAC_ROOT}/motion-diffusion-model"
     sys.path.insert(0, repo)
     import os
     os.chdir(repo)
@@ -117,7 +119,7 @@ def make_mdm_runner(dev):
 
 
 def make_mld_runner(dev):
-    repo = "/data/pmyap24/sac/motion-latent-diffusion"
+    repo = f"{SAC_ROOT}/motion-latent-diffusion"
     sys.path.insert(0, repo)
     import os
     os.chdir(repo)
@@ -187,7 +189,7 @@ def main():
     coll.set_active(None)
 
     weights = {n: m.weight.detach().float().cpu() for n, m in coll.layers.items()}
-    out = Path(f"/data/pmyap24/sac/results/engram_covs_{args.model}.pt")
+    out = Path(f"{SAC_ROOT}/results/engram_covs_{args.model}.pt")
     torch.save({"buckets": coll.buckets, "counts": coll.counts,
                 "weights": weights}, out)
     print(f"saved covariances + weights to {out}", flush=True)

@@ -5,7 +5,7 @@ with the framework's arg parser, e.g.
   python mld_extract_grid.py --cfg configs/config_mld_humanml3d.yaml \
       --cfg_assets configs/assets.yaml \
       --grid grid_v2_all_templates.json \
-      --out /data/pmyap24/sac/results/mld_v2/seed42 --seed 42
+      --out $SAC_ROOT/results/mld_v2/seed42 --seed 42
 
 Extraction site: the sampled diffusion latent z = _diffusion_reverse(text_emb),
 shape (bsz, 1, 256) -> squeezed to (256,). This is the latent the diffusion

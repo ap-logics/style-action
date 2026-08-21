@@ -6,8 +6,8 @@ decode by nearest prototype (cosine). Run from the MLD repo root:
 
   python mld_ap.py --cfg configs/config_mld_humanml3d.yaml \
       --cfg_assets configs/assets.yaml \
-      --latents /data/pmyap24/sac/results_v2/mld_v2/seed42/0 \
-      --out /data/pmyap24/sac/results/ap_mld_seed42.json
+      --latents $SAC_ROOT/results_v2/mld_v2/seed42/0 \
+      --out $SAC_ROOT/results/ap_mld_seed42.json
 """
 import json, sys
 from pathlib import Path

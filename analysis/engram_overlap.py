@@ -30,6 +30,7 @@ import json
 import sys
 import time
 from argparse import Namespace
+import os
 from pathlib import Path
 
 import numpy as np
@@ -37,6 +38,7 @@ import torch
 import torch.nn as nn
 
 ROOT = Path(__file__).resolve().parents[1]
+SAC_ROOT = os.environ.get("SAC_ROOT") or f"/data/{os.environ.get('USER','')}/sac"
 HP = dict(nb_code=512, code_dim=512, output_emb_width=512, down_t=2,
           stride_t=2, width=512, depth=3, dilation_growth_rate=3,
           embed_dim_gpt=1024, clip_dim=512, block_size=51, num_layers=9,
@@ -167,8 +169,8 @@ def main():
         print(f"collected template {g['template']}  ({time.time()-t0:.0f}s)", flush=True)
 
     # ---- cache covariances so reruns skip the sampling stage ----
-    cache = Path("/data/pmyap24/sac/results/engram_covs_t2mgpt.pt") \
-        if Path("/data/pmyap24/sac").exists() else ROOT / "results" / "engram_covs_t2mgpt.pt"
+    cache = Path(f"{SAC_ROOT}/results/engram_covs_t2mgpt.pt") \
+        if Path(f"{SAC_ROOT}").exists() else ROOT / "results" / "engram_covs_t2mgpt.pt"
     torch.save({"buckets": coll.buckets, "counts": coll.counts}, cache)
     print(f"covariances cached to {cache}", flush=True)
 

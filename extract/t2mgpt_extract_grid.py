@@ -13,7 +13,7 @@ Output per template t:
 
 Usage:
   python t2mgpt_extract_grid.py --grid grid_all_templates.json \
-      --out /data/pmyap24/sac/results/t2mgpt --seed 42
+      --out $SAC_ROOT/results/t2mgpt --seed 42
 """
 import json
 import time

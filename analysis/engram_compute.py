@@ -8,11 +8,13 @@ matrices.
 from __future__ import annotations
 import argparse, collections, json, sys
 from argparse import Namespace
+import os
 from pathlib import Path
 import numpy as np
 import torch
 
 ROOT = Path(__file__).resolve().parents[1]
+SAC_ROOT = os.environ.get("SAC_ROOT") or f"/data/{os.environ.get('USER','')}/sac"
 HP = dict(nb_code=512, code_dim=512, output_emb_width=512, down_t=2,
           stride_t=2, width=512, depth=3, dilation_growth_rate=3,
           embed_dim_gpt=1024, clip_dim=512, block_size=51, num_layers=9,
@@ -109,7 +111,7 @@ summary = {
 print(f"\nwithin-style (centered split-half):  {summary['within_style_mean']:+.3f}")
 print(f"between-style (centered, cross-half): {summary['between_style_mean']:+.3f} ± {summary['between_style_sd']:.3f}")
 print(f"style vs neutral (centered):          {summary['style_vs_neutral_mean']:+.3f}")
-out = Path(f"/data/pmyap24/sac/results/engram_overlap_{args.out_name}.json") \
-    if Path("/data/pmyap24/sac").exists() else ROOT / "results" / f"engram_overlap_{args.out_name}.json"
+out = Path(f"{SAC_ROOT}/results/engram_overlap_{args.out_name}.json") \
+    if Path(f"{SAC_ROOT}").exists() else ROOT / "results" / f"engram_overlap_{args.out_name}.json"
 out.write_text(json.dumps(summary, indent=1))
 print(f"saved {out}")

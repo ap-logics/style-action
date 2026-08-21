@@ -12,7 +12,7 @@ style axis the way plain CLIP does, and does training-corpus richness
 
 Run from the OpenTMA repo root:
   python opentma_extract.py --grid grid_all_templates.json \
-      --out /data/pmyap24/sac/results
+      --out $SAC_ROOT/results
 Outputs results/opentma_{h3d,motionx,unimocap}/{t}/Z_S.npy etc.,
 same layout as the other extractors, scoreable by score_hpc.py.
 """

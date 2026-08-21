@@ -17,7 +17,7 @@ If suppression tracks the style's trace strength from experiment 1
 (strong-trace styles ablate cleanly, weak-trace styles resist), the trace
 is causally real, not a correlational artifact.
 
-Usage (cluster, /data/pmyap24/sac):
+Usage (cluster, $SAC_ROOT):
   python analysis/engram_ablate.py --t2mgpt_root T2M-GPT \
       --cache results/engram_covs_t2mgpt.pt --grid grid_v2_all_templates.json \
       --targets gently carefully tiredly --alphas 0.5 1.0
@@ -27,11 +27,14 @@ import argparse
 import json
 import sys
 from argparse import Namespace
+import os
 from pathlib import Path
 
 import numpy as np
 import torch
 import torch.nn as nn
+
+SAC_ROOT = os.environ.get("SAC_ROOT") or f"/data/{os.environ.get('USER','')}/sac"
 
 HP = dict(nb_code=512, code_dim=512, output_emb_width=512, down_t=2,
           stride_t=2, width=512, depth=3, dilation_growth_rate=3,
@@ -186,8 +189,8 @@ def main():
                 for name, m in layers.items():
                     m.weight.copy_(originals[name].to(dev))
 
-    out = Path("/data/pmyap24/sac/results/engram_ablation_t2mgpt.json") \
-        if Path("/data/pmyap24/sac").exists() \
+    out = Path(f"{SAC_ROOT}/results/engram_ablation_t2mgpt.json") \
+        if Path(f"{SAC_ROOT}").exists() \
         else Path(__file__).resolve().parents[1] / "results" / "engram_ablation_t2mgpt.json"
     out.write_text(json.dumps(results, indent=1))
     print(f"saved {out}")
